@@ -1,0 +1,36 @@
+{
+  "name": "learn-webgl",
+  "version": "1.0.0",
+  "description": "this is my learning note about WebGL.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://ykob@github.com/ykob/learn-webgl.git"
+  },
+  "keywords": [
+    "WebGL"
+  ],
+  "author": "yoichi kobayashi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ykob/learn-webgl/issues"
+  },
+  "homepage": "https://github.com/ykob/learn-webgl#readme",
+  "devDependencies": {
+    "babelify": "^7.2.0",
+    "browserify": "^12.0.1",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.1",
+    "gulp-jade": "^1.1.0",
+    "gulp-load-plugins": "^1.1.0",
+    "gulp-ruby-sass": "^2.0.6",
+    "licensify": "^2.0.1",
+    "watchify": "^3.6.1"
+  },
+  "dependencies": {
+    "glslify": "^5.0.0"
+  }
+}
