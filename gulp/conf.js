@@ -19,3 +19,8 @@ module.exports.serve = {
     }
   }
 };
+
+module.exports.sass = {
+  src: [`${DIR.SRC}/css/main.css`],
+  dst: `${DIR.DST}/css/`
+};
