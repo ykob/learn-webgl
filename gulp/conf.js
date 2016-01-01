@@ -12,11 +12,23 @@ module.exports.serve = {
   startPath: `${DIR.PATH}`,
   ghostMode: false,
   server: {
-    baseDir: DIR.DEST,
+    baseDir: DIR.DST,
     index: 'index.html',
     routes: {
-      [DIR.PATH]: `${DIR.DEST}${DIR.PATH}/`
+      [DIR.PATH]: `${DIR.DST}${DIR.PATH}/`
     }
+  }
+};
+
+module.exports.jade = {
+  src: [
+    `${DIR.SRC}/**/*.jade`,
+    `!${DIR.SRC}/**/_**/*.jade`,
+    `!${DIR.SRC}/**/_*.jade`
+  ],
+  dst: `${DIR.DST}${DIR.PATH}`,
+  opts: {
+    pretty: true
   }
 };
 
