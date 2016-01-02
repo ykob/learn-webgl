@@ -90,3 +90,4 @@ node_modules
 .sass-cache/
 *.css.map
 
+dst/*
