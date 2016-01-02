@@ -9,7 +9,7 @@ requireDir('./gulp/tasks');
 
 gulp.task('predefault', callback => {
   runSequence(
-    ['jade', 'sass'],
+    ['jade', 'sass', 'watchify'],
     'serve',
     callback
   );

@@ -20,9 +20,11 @@
   },
   "homepage": "https://github.com/ykob/learn-webgl#readme",
   "devDependencies": {
+    "babel-preset-es2015": "^6.3.13",
     "babelify": "^7.2.0",
     "browser-sync": "^2.10.1",
     "browserify": "^12.0.1",
+    "event-stream": "^3.3.2",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",
     "gulp-jade": "^1.1.0",
@@ -31,9 +33,9 @@
     "gulp-plumber": "^1.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-ruby-sass": "^2.0.6",
-    "licensify": "^2.0.1",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.5",
+    "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.1"
   },
   "dependencies": {

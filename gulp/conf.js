@@ -36,3 +36,18 @@ module.exports.sass = {
   src: [`${DIR.SRC}/css/main.css`],
   dst: `${DIR.DST}/css/`
 };
+
+module.exports.scripts = {
+  entryFiles: [
+    `./${DIR.SRC}/js/main.js`
+  ],
+  browserifyOpts: {
+    transform: [
+      ['babelify', {
+        babelrc: false,
+        presets: ['es2015']
+      }]
+    ]
+  },
+  dest: `${DIR.DST}${DIR.PATH}/js`
+};
