@@ -21,11 +21,11 @@ gulp.task('default', ['predefault'], () => {
     ['jade', reload]
   );
   gulp.watch(
-    [`./${DIR.SRC}/css/**/*.{scss, sass}`],
+    [`./${DIR.SRC}/**/*.{scss, sass}`],
     ['sass', reload]
   );
   gulp.watch(
-    [`./${DIR.DST}/js/**/*.js`],
+    [`./${DIR.DST}/**/*.js`],
     reload
   );
 });

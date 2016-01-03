@@ -33,13 +33,13 @@ module.exports.jade = {
 };
 
 module.exports.sass = {
-  src: [`${DIR.SRC}/css/main.css`],
+  src: [`${DIR.SRC}/css/main.scss`],
   dst: `${DIR.DST}/css/`
 };
 
 module.exports.scripts = {
   entryFiles: [
-    `./${DIR.SRC}/js/main.js`
+    `./${DIR.SRC}/js/001.js`
   ],
   browserifyOpts: {
     transform: [
