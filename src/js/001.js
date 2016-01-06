@@ -15,7 +15,7 @@ const init = () => {
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
-  const triangle_data = [
+  const vertices = [
      0.0,  0.5, 0.0,
      0.5, -0.5, 0.0,
     -0.5, -0.5, 0.0
@@ -23,7 +23,7 @@ const init = () => {
 
   const vertexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangle_data), gl.STATIC_DRAW);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 
   const program = gl.createProgram();
   const vs = loadShader(gl.VERTEX_SHADER, gl, vs_src);
@@ -36,7 +36,7 @@ const init = () => {
   const attr_location = gl.getAttribLocation(program, 'position');
   gl.enableVertexAttribArray(attr_location);
   gl.vertexAttribPointer(attr_location, 3, gl.FLOAT, false, 0, 0);
-  gl.drawArrays(gl.TRIANGLES, 0, triangle_data.length / 3);
+  gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 3);
   gl.flush();
 
 };
