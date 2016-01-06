@@ -32,8 +32,9 @@ const init = () => {
   gl.linkProgram(program);
   gl.useProgram(program);
 
-  gl.vertexAttribPointer(program.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(program.vertexPositionAttribute);
+  const vertex_position_attribute = gl.getAttribLocation(program, 'position');
+  gl.vertexAttribPointer(vertex_position_attribute, 3, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(vertex_position_attribute);
   gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 3);
 };
 init();
