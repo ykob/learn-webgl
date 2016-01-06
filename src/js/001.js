@@ -7,6 +7,12 @@ const gl = canvas.getContext('webgl');
 const glslify = require('glslify');
 const vs_src = glslify('./001.vs');
 const fs_src = glslify('./001.fs');
+const vertex_buffer = gl.createBuffer();
+const vertices = [
+   0.0,  0.5, 0.0,
+   0.5, -0.5, 0.0,
+  -0.5, -0.5, 0.0
+];
 
 const init = () => {
   resizeWindow(canvas);
@@ -15,14 +21,7 @@ const init = () => {
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
-  const vertices = [
-     0.0,  0.5, 0.0,
-     0.5, -0.5, 0.0,
-    -0.5, -0.5, 0.0
-  ];
-
-  const vertexBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 
   const program = gl.createProgram();
@@ -33,11 +32,8 @@ const init = () => {
   gl.linkProgram(program);
   gl.useProgram(program);
 
-  const attr_location = gl.getAttribLocation(program, 'position');
-  gl.enableVertexAttribArray(attr_location);
-  gl.vertexAttribPointer(attr_location, 3, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribPointer(program.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(program.vertexPositionAttribute);
   gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 3);
-  gl.flush();
-
 };
 init();
