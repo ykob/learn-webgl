@@ -1,4 +1,4 @@
-import { debounce } from './debounce.js';
+import debounce from './debounce.js';
 
 const resizeCanvas = (canvas) => {
   canvas.width = document.body.clientWidth;
@@ -7,7 +7,7 @@ const resizeCanvas = (canvas) => {
   canvas.style.height = `${document.body.clientHeight}px`;
 };
 
-export const resizeWindow = (canvas) => {
+export default function(canvas) {
   resizeCanvas(canvas);
   debounce(window, 'resize', () => {
     resizeCanvas(canvas);

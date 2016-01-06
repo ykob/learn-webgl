@@ -1,4 +1,4 @@
-export const debounce = (object, eventType, callback) => {
+export default function(object, eventType, callback) {
   let timer;
 
   object.addEventListener(eventType, function(event) {
