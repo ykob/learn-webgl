@@ -5,9 +5,6 @@ import loadShader from './modules/loadShader.js';
 const canvas = document.getElementById('webgl-contents');
 const gl = canvas.getContext('webgl');
 const glslify = require('glslify');
-const vs_src = glslify('./001.vs');
-const fs_src = glslify('./001.fs');
-const vertex_buffer = gl.createBuffer();
 const vertices = [
   0.5, 0.75, 0.5,
   0.75, 0.25, 0.5,
@@ -24,15 +21,17 @@ const init = () => {
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
+  const vertex_buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 
   const program = gl.createProgram();
+  const vs_src = glslify('./001.vs');
   const vs = loadShader(gl.VERTEX_SHADER, gl, vs_src);
-  const fs = loadShader(gl.FRAGMENT_SHADER, gl, fs_src);
   gl.attachShader(program, vs);
+  const fs_src = glslify('./001.fs');
+  const fs = loadShader(gl.FRAGMENT_SHADER, gl, fs_src);
   gl.attachShader(program, fs);
-
   gl.linkProgram(program);
   gl.useProgram(program);
 
