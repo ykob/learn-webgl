@@ -2,9 +2,11 @@ import resizeWindow from './modules/resizeWindow.js';
 import isSupportedWebGL from './modules/isSupportedWebGL.js';
 import loadProgram from './modules/loadProgram.js';
 
+const glMatrix = require('gl-matrix');
+const glslify = require('glslify');
+
 const canvas = document.getElementById('webgl-contents');
 const gl = canvas.getContext('webgl');
-const glslify = require('glslify');
 const vertices = [
   0.5, 0.75, 0.5,
   0.75, 0.25, 0.5,
