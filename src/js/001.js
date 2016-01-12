@@ -9,9 +9,12 @@ const vs_src = glslify('./001.vs');
 const fs_src = glslify('./001.fs');
 const vertex_buffer = gl.createBuffer();
 const vertices = [
-   0.0,  0.5, 0.0,
-   0.5, -0.5, 0.0,
-  -0.5, -0.5, 0.0
+  0.5, 0.75, 0.5,
+  0.75, 0.25, 0.5,
+  0.25, 0.25, 0.5,
+  -0.5, -0.75, 0.5,
+  -0.75, -0.25, 0.5,
+  -0.25, -0.25, 0.5,
 ];
 
 const init = () => {
@@ -29,12 +32,13 @@ const init = () => {
   const fs = loadShader(gl.FRAGMENT_SHADER, gl, fs_src);
   gl.attachShader(program, vs);
   gl.attachShader(program, fs);
+
   gl.linkProgram(program);
   gl.useProgram(program);
 
-  const vertex_position_attribute = gl.getAttribLocation(program, 'position');
-  gl.vertexAttribPointer(vertex_position_attribute, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(vertex_position_attribute);
+  const attr_position = gl.getAttribLocation(program, 'position');
+  gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(attr_position);
   gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 3);
 };
 init();
