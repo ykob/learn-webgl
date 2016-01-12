@@ -1,6 +1,6 @@
 import resizeWindow from './modules/resizeWindow.js';
 import isSupportedWebGL from './modules/isSupportedWebGL.js';
-import loadShader from './modules/loadShader.js';
+import loadProgram from './modules/loadProgram.js';
 
 const canvas = document.getElementById('webgl-contents');
 const gl = canvas.getContext('webgl');
@@ -25,15 +25,7 @@ const init = () => {
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 
-  const program = gl.createProgram();
-  const vs_src = glslify('./001.vs');
-  const vs = loadShader(gl.VERTEX_SHADER, gl, vs_src);
-  gl.attachShader(program, vs);
-  const fs_src = glslify('./001.fs');
-  const fs = loadShader(gl.FRAGMENT_SHADER, gl, fs_src);
-  gl.attachShader(program, fs);
-  gl.linkProgram(program);
-  gl.useProgram(program);
+  const program = loadProgram(gl, glslify('./001.vs'), glslify('./001.fs'));
 
   const attr_position = gl.getAttribLocation(program, 'position');
   gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);
