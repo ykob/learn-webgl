@@ -3,10 +3,14 @@ import isSupportedWebGL from './modules/isSupportedWebGL.js';
 import loadProgram from './modules/loadProgram.js';
 
 const glMatrix = require('gl-matrix');
+const mat4 = glMatrix.mat4;
 const glslify = require('glslify');
 
 const canvas = document.getElementById('webgl-contents');
 const gl = canvas.getContext('webgl');
+const mMatrix = mat4.identity(mat4.create());
+const vMatrix = mat4.identity(mat4.create());
+const pMatrix = mat4.identity(mat4.create());
 const vertices = [
   0.5, 0.75, 0.5,
   0.75, 0.25, 0.5,
