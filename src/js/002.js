@@ -12,30 +12,63 @@ const gl = canvas.getContext('webgl');
 const mMatrix = mat4.identity(mat4.create());
 const vMatrix = mat4.identity(mat4.create());
 const pMatrix = mat4.identity(mat4.create());
-const vertices = [];
+const vertices1 = [
+  -0.5, 0.6, 0,
+  -0.3, 0.4, 0,
+  -0.1, 0.6, 0,
+  0.1, 0.4, 0,
+  0.3, 0.6, 0,
+  0.5, 0.4, 0,
+];
+const vertices2 = [
+  -0.5, -0.1, 0,
+  -0.3, 0.1, 0,
+  -0.1, -0.1, 0,
+  0.1, 0.1, 0,
+  0.3, -0.1, 0,
+  0.5, 0.1, 0,
+];
+const vertices3 = [
+  -0.5, -0.6, 0,
+  -0.3, -0.4, 0,
+  -0.1, -0.6, 0,
+  0.1, -0.4, 0,
+  0.3, -0.6, 0,
+  0.5, -0.4, 0,
+];
 
 const init = () => {
-  for (var i = 0; i < 100; i++) {
-    vertices[i * 3 + 0] = (Util.getRandomInt(0, 1000) - 500) / 1000;
-    vertices[i * 3 + 1] = (Util.getRandomInt(0, 1000) - 500) / 1000;
-    vertices[i * 3 + 2] = (Util.getRandomInt(0, 1000) - 500) / 1000;
-  }
-
   resizeWindow(canvas);
   isSupportedWebGL(gl);
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
-  const vertex_buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-
-  const program = loadProgram(gl, glslify('./001.vs'), glslify('./001.fs'));
-
+  const program = loadProgram(gl, glslify('./002.vs'), glslify('./002.fs'));
   const attr_position = gl.getAttribLocation(program, 'position');
+
+  const vertex_buffer1 = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer1);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices1), gl.STATIC_DRAW);
+
   gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(attr_position);
-  gl.drawArrays(gl.LINE_LOOP, 0, vertices.length / 3);
+  gl.drawArrays(gl.LINE_LOOP, 0, vertices1.length / 3);
+
+  const vertex_buffer2 = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer2);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices2), gl.STATIC_DRAW);
+
+  gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(attr_position);
+  gl.drawArrays(gl.LINES, 0, vertices2.length / 3);
+
+  const vertex_buffer3 = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer3);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices3), gl.STATIC_DRAW);
+
+  gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(attr_position);
+  gl.drawArrays(gl.LINE_STRIP, 0, vertices3.length / 3);
 };
 init();
