@@ -13,12 +13,12 @@ const mMatrix = mat4.identity(mat4.create());
 const vMatrix = mat4.identity(mat4.create());
 const pMatrix = mat4.identity(mat4.create());
 const vertices1 = [
-  -0.5, 0.6, 0,
-  -0.3, 0.4, 0,
-  -0.1, 0.6, 0,
-  0.1, 0.4, 0,
-  0.3, 0.6, 0,
-  0.5, 0.4, 0,
+  -0.5, 0.4, 0,
+  -0.3, 0.6, 0,
+  -0.1, 0.4, 0,
+  0.1, 0.6, 0,
+  0.3, 0.4, 0,
+  0.5, 0.6, 0,
 ];
 const vertices2 = [
   -0.5, -0.1, 0,
