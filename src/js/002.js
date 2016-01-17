@@ -46,27 +46,20 @@ const init = () => {
 
   const program = loadProgram(gl, glslify('./002.vs'), glslify('./002.fs'));
   const attr_position = gl.getAttribLocation(program, 'position');
+  const vertex_buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
 
-  const vertex_buffer1 = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer1);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices1), gl.STATIC_DRAW);
-
   gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(attr_position);
   gl.drawArrays(gl.LINE_LOOP, 0, vertices1.length / 3);
 
-  const vertex_buffer2 = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer2);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices2), gl.STATIC_DRAW);
-
   gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(attr_position);
   gl.drawArrays(gl.LINES, 0, vertices2.length / 3);
 
-  const vertex_buffer3 = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer3);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices3), gl.STATIC_DRAW);
-
   gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(attr_position);
   gl.drawArrays(gl.LINE_STRIP, 0, vertices3.length / 3);
