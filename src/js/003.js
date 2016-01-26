@@ -80,31 +80,54 @@ const init = () => {
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
+  const m_matrix = mat4.create();
+  mat4.identity(m_matrix);
+  const v_matrix = mat4.create();
+  mat4.identity(v_matrix);
+  const p_matrix = mat4.create();
+  mat4.identity(p_matrix);
+
+  const center_point = [0.0, 0.0, 0.0];
+  const camera = {
+    position: [0.0, 0.0, 3.0],
+    up: [0.0, 1.0, 0.0]
+  }
+  mat4.lookAt(v_matrix, camera.position, center_point, camera.up);
+
+  const fovy = 45;
+  const aspect = canvas.width / canvas.height;
+  const near = 0.1;
+  const far = 10.0;
+  mat4.perspective(p_matrix, fovy, aspect, near, far);
+
+  // const move = [0.5, 0.5, 0.0];
+  // mat4.translate(m_matrix, m_matrix, move);
+
   const program = loadProgram(gl, glslify('./003.vs'), glslify('./003.fs'));
   const attr_position = gl.getAttribLocation(program, 'position');
-  const attr_color = gl.getAttribLocation(program, 'color');
-  const attr_index = gl.getAttribLocation(program, 'index');
+  // const attr_color = gl.getAttribLocation(program, 'color');
+  // const attr_index = gl.getAttribLocation(program, 'index');
   gl.enableVertexAttribArray(attr_position);
-  gl.enableVertexAttribArray(attr_color);
-  gl.enableVertexAttribArray(attr_index);
+  // gl.enableVertexAttribArray(attr_color);
+  // gl.enableVertexAttribArray(attr_index);
 
   const vertex_buffer = gl.createBuffer();
-  const color_buffer = gl.createBuffer();
-  const index_buffer = gl.createBuffer();
+  // const color_buffer = gl.createBuffer();
+  // const index_buffer = gl.createBuffer();
 
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-  gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(generated_colors), gl.STATIC_DRAW);
-  gl.bindBuffer(gl.ARRAY_BUFFER, index_buffer);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+  // gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
+  // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(generated_colors), gl.STATIC_DRAW);
+  // gl.bindBuffer(gl.ARRAY_BUFFER, index_buffer);
+  // gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
 
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
   gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);
-  gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
-  gl.vertexAttribPointer(attr_color, 4, gl.FLOAT, false, 0, 0);
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
+  // gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
+  // gl.vertexAttribPointer(attr_color, 4, gl.FLOAT, false, 0, 0);
+  // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
 
-  gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 3);
+  gl.drawArrays(gl.LINE_LOOP, 0, vertices.length / 3);
 };
 init();
