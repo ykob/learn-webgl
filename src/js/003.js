@@ -9,9 +9,7 @@ const glslify = require('glslify');
 
 const canvas = document.getElementById('webgl-contents');
 const gl = canvas.getContext('webgl');
-const mMatrix = mat4.identity(mat4.create());
-const vMatrix = mat4.identity(mat4.create());
-const pMatrix = mat4.identity(mat4.create());
+
 const vertices = [
   // Front face
   -1.0, -1.0,  1.0,
@@ -49,6 +47,7 @@ const vertices = [
   -1.0,  1.0,  1.0,
   -1.0,  1.0, -1.0
 ];
+
 const colors = [
   [1.0,  1.0,  1.0,  1.0],    // Front face: white
   [1.0,  0.0,  0.0,  1.0],    // Back face: red
@@ -80,33 +79,36 @@ const init = () => {
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
-  const m_matrix = mat4.create();
-  mat4.identity(m_matrix);
-  const v_matrix = mat4.create();
-  mat4.identity(v_matrix);
-  const p_matrix = mat4.create();
-  mat4.identity(p_matrix);
+  const m_matrix   = mat4.identity(mat4.create());
+  const v_matrix   = mat4.identity(mat4.create());
+  const p_matrix   = mat4.identity(mat4.create());
+  const vp_matrix  = mat4.identity(mat4.create());
+  const mvp_matrix = mat4.identity(mat4.create());
 
-  const center_point = [0.0, 0.0, 0.0];
+  const move = [0.5, 0.5, 0.0];
+  mat4.translate(m_matrix, m_matrix, move);
+
+  const center = [0.0, 0.0, 0.0];
   const camera = {
-    position: [0.0, 0.0, 3.0],
+    position: [5.0, 5.0, 10.0],
     up: [0.0, 1.0, 0.0]
-  }
-  mat4.lookAt(v_matrix, camera.position, center_point, camera.up);
+  };
+  mat4.lookAt(v_matrix, camera.position, center, camera.up);
 
   const fovy = 45;
   const aspect = canvas.width / canvas.height;
   const near = 0.1;
-  const far = 10.0;
+  const far = 100.0;
   mat4.perspective(p_matrix, fovy, aspect, near, far);
 
-  // const move = [0.5, 0.5, 0.0];
-  // mat4.translate(m_matrix, m_matrix, move);
+  mat4.multiply(vp_matrix, p_matrix, v_matrix);
+  mat4.multiply(mvp_matrix, vp_matrix, m_matrix);
 
   const program = loadProgram(gl, glslify('./003.vs'), glslify('./003.fs'));
   const attr_position = gl.getAttribLocation(program, 'position');
   // const attr_color = gl.getAttribLocation(program, 'color');
   // const attr_index = gl.getAttribLocation(program, 'index');
+  const uni_location = gl.getUniformLocation(program, 'mvp_matrix');
   gl.enableVertexAttribArray(attr_position);
   // gl.enableVertexAttribArray(attr_color);
   // gl.enableVertexAttribArray(attr_index);
@@ -124,10 +126,14 @@ const init = () => {
 
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
   gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);
+
   // gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
   // gl.vertexAttribPointer(attr_color, 4, gl.FLOAT, false, 0, 0);
   // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
 
+  gl.uniformMatrix4fv(uni_location, false, mvp_matrix);
+
   gl.drawArrays(gl.LINE_LOOP, 0, vertices.length / 3);
+  gl.flush();
 };
 init();
