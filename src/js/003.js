@@ -82,15 +82,15 @@ const init = () => {
   const m_matrix   = mat4.identity(mat4.create());
   const v_matrix   = mat4.identity(mat4.create());
   const p_matrix   = mat4.identity(mat4.create());
-  const vp_matrix  = mat4.identity(mat4.create());
+  const mv_matrix  = mat4.identity(mat4.create());
   const mvp_matrix = mat4.identity(mat4.create());
 
-  const move = [0.5, 0.5, 0.0];
-  mat4.translate(m_matrix, m_matrix, move);
+  // const move = [0.5, 0.5, 0.0];
+  // mat4.translate(m_matrix, m_matrix, move);
 
   const center = [0.0, 0.0, 0.0];
   const camera = {
-    position: [5.0, 5.0, 10.0],
+    position: [2.0, 2.0, 4.0],
     up: [0.0, 1.0, 0.0]
   };
   mat4.lookAt(v_matrix, camera.position, center, camera.up);
@@ -101,8 +101,8 @@ const init = () => {
   const far = 100.0;
   mat4.perspective(p_matrix, fovy, aspect, near, far);
 
-  mat4.multiply(vp_matrix, p_matrix, v_matrix);
-  mat4.multiply(mvp_matrix, vp_matrix, m_matrix);
+  mat4.multiply(mv_matrix, m_matrix, v_matrix);
+  mat4.multiply(mvp_matrix, p_matrix, mv_matrix);
 
   const program = loadProgram(gl, glslify('./003.vs'), glslify('./003.fs'));
   const attr_position = gl.getAttribLocation(program, 'position');
