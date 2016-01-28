@@ -88,19 +88,21 @@ const init = () => {
   // const move = [0.5, 0.5, 0.0];
   // mat4.translate(m_matrix, m_matrix, move);
 
+  mat4.rotateY(m_matrix, m_matrix, Math.PI / 180);
+
   const center = [0.0, 0.0, 0.0];
   const camera = {
     position: [2.0, 2.0, 4.0],
     up: [0.0, 1.0, 0.0]
   };
-  mat4.lookAt(v_matrix, camera.position, center, camera.up);
 
-  const fovy = 45;
+  const fovy = 10;
   const aspect = canvas.width / canvas.height;
   const near = 0.1;
   const far = 100.0;
-  mat4.perspective(p_matrix, fovy, aspect, near, far);
 
+  mat4.lookAt(v_matrix, camera.position, center, camera.up);
+  mat4.perspective(p_matrix, fovy, aspect, near, far);
   mat4.multiply(mv_matrix, m_matrix, v_matrix);
   mat4.multiply(mvp_matrix, p_matrix, mv_matrix);
 
@@ -135,5 +137,20 @@ const init = () => {
 
   gl.drawArrays(gl.LINE_LOOP, 0, vertices.length / 3);
   gl.flush();
+
+  const render = () => {
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    mat4.rotateY(m_matrix, m_matrix, Math.PI / 180);
+    mat4.multiply(mv_matrix, m_matrix, v_matrix);
+    mat4.multiply(mvp_matrix, p_matrix, mv_matrix);
+    gl.uniformMatrix4fv(uni_location, false, mvp_matrix);
+    gl.drawArrays(gl.LINE_LOOP, 0, vertices.length / 3);
+  };
+  const renderLoop = () => {
+    render();
+    requestAnimationFrame(renderLoop);
+  };
+  renderLoop();
 };
 init();
