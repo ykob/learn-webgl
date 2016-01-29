@@ -96,7 +96,7 @@ const init = () => {
     up: [0.0, 1.0, 0.0]
   };
 
-  const fovy = 10;
+  const fovy = 45;
   const aspect = canvas.width / canvas.height;
   const near = 0.1;
   const far = 100.0;
@@ -106,10 +106,13 @@ const init = () => {
   mat4.multiply(mv_matrix, m_matrix, v_matrix);
   mat4.multiply(mvp_matrix, p_matrix, mv_matrix);
 
+  let time = 0.0;
+
   const program = loadProgram(gl, glslify('./003.vs'), glslify('./003.fs'));
   const attr_position = gl.getAttribLocation(program, 'position');
   // const attr_color = gl.getAttribLocation(program, 'color');
   // const attr_index = gl.getAttribLocation(program, 'index');
+  const uni_time = gl.getUniformLocation(program, 'time');
   const uni_location = gl.getUniformLocation(program, 'mvp_matrix');
   gl.enableVertexAttribArray(attr_position);
   // gl.enableVertexAttribArray(attr_color);
@@ -133,18 +136,17 @@ const init = () => {
   // gl.vertexAttribPointer(attr_color, 4, gl.FLOAT, false, 0, 0);
   // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
 
+  gl.uniform1f(uni_time, time);
   gl.uniformMatrix4fv(uni_location, false, mvp_matrix);
 
   gl.drawArrays(gl.LINE_LOOP, 0, vertices.length / 3);
   gl.flush();
 
   const render = () => {
+    time += 1;
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.viewport(0, 0, canvas.width, canvas.height);
-    mat4.rotateY(m_matrix, m_matrix, Math.PI / 180);
-    mat4.multiply(mv_matrix, m_matrix, v_matrix);
-    mat4.multiply(mvp_matrix, p_matrix, mv_matrix);
-    gl.uniformMatrix4fv(uni_location, false, mvp_matrix);
+    gl.uniform1f(uni_time, time);
     gl.drawArrays(gl.LINE_LOOP, 0, vertices.length / 3);
   };
   const renderLoop = () => {
