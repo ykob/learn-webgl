@@ -139,9 +139,6 @@ const init = () => {
   gl.uniform1f(uni_time, time);
   gl.uniformMatrix4fv(uni_location, false, mvp_matrix);
 
-  gl.drawArrays(gl.LINE_LOOP, 0, vertices.length / 3);
-  gl.flush();
-
   const render = () => {
     time += 1;
     gl.clear(gl.COLOR_BUFFER_BIT);
