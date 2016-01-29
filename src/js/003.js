@@ -79,6 +79,19 @@ const init = () => {
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
+  const center = [0.0, 0.0, 0.0];
+  const camera = {
+    position: [2.0, 2.0, 4.0],
+    up: [0.0, 1.0, 0.0]
+  };
+
+  let fovy = 45;
+  let aspect = canvas.width / canvas.height;
+  let near = 0.1;
+  let far = 100.0;
+
+  let time = 0.0;
+
   const m_matrix   = mat4.identity(mat4.create());
   const v_matrix   = mat4.identity(mat4.create());
   const p_matrix   = mat4.identity(mat4.create());
@@ -90,23 +103,10 @@ const init = () => {
 
   mat4.rotateY(m_matrix, m_matrix, Math.PI / 180);
 
-  const center = [0.0, 0.0, 0.0];
-  const camera = {
-    position: [2.0, 2.0, 4.0],
-    up: [0.0, 1.0, 0.0]
-  };
-
-  const fovy = 45;
-  const aspect = canvas.width / canvas.height;
-  const near = 0.1;
-  const far = 100.0;
-
   mat4.lookAt(v_matrix, camera.position, center, camera.up);
   mat4.perspective(p_matrix, fovy, aspect, near, far);
   mat4.multiply(mv_matrix, m_matrix, v_matrix);
   mat4.multiply(mvp_matrix, p_matrix, mv_matrix);
-
-  let time = 0.0;
 
   const program = loadProgram(gl, glslify('./003.vs'), glslify('./003.fs'));
   const attr_position = gl.getAttribLocation(program, 'position');
@@ -142,7 +142,6 @@ const init = () => {
   const render = () => {
     time += 1;
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform1f(uni_time, time);
     gl.drawArrays(gl.LINE_LOOP, 0, vertices.length / 3);
   };
