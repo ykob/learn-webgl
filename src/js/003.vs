@@ -1,8 +1,12 @@
 attribute vec3 position;
+attribute vec3 color;
 uniform mat4 mvp_matrix;
 uniform float time;
 
+varying vec3 vColor;
+
 void main() {
+  vColor = color;
   float scale = 1.0 - 0.2 * sin(radians(time * 3.0));
   mat3 rotate_x = mat3(
     1.0, 0.0, 0.0,

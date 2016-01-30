@@ -28,11 +28,22 @@ const indecies = [
   3, 7, 2,   6, 2, 7,
   5, 6, 4,   7, 4, 6,
 ];
+const colors = [
+  0.0, 0.5, 0.8,
+  0.0, 0.5, 0.8,
+  0.25, 0.5, 0.8,
+  0.25, 0.5, 0.8,
+  0.5, 0.5, 0.8,
+  0.5, 0.5, 0.8,
+  0.75, 0.5, 0.8,
+  0.75, 0.5, 0.8,
+];
 
 const init = () => {
   resizeWindow(canvas);
   isSupportedWebGL(gl);
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
+  gl.enable(gl.DEPTH_TEST);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
@@ -68,27 +79,26 @@ const init = () => {
   const program = loadProgram(gl, glslify('./003.vs'), glslify('./003.fs'));
   const attr_position = gl.getAttribLocation(program, 'position');
   const attr_index = gl.getAttribLocation(program, 'index');
-  // const attr_color = gl.getAttribLocation(program, 'color');
+  const attr_color = gl.getAttribLocation(program, 'color');
   const uni_time = gl.getUniformLocation(program, 'time');
   const uni_location = gl.getUniformLocation(program, 'mvp_matrix');
-  gl.enableVertexAttribArray(attr_position);
-  // gl.enableVertexAttribArray(attr_color);
 
   const vertex_buffer = gl.createBuffer();
   const index_buffer = gl.createBuffer();
-  // const color_buffer = gl.createBuffer();
+  const color_buffer = gl.createBuffer();
 
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-  // gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
-  // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(generated_colors), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(attr_position);
+  gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);
+
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indecies), gl.STATIC_DRAW);
 
-  gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);
-
-  // gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
-  // gl.vertexAttribPointer(attr_color, 4, gl.FLOAT, false, 0, 0);
+  gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(attr_color);
+  gl.vertexAttribPointer(attr_color, 3, gl.FLOAT, false, 0, 0);
 
   gl.uniform1f(uni_time, time);
   gl.uniformMatrix4fv(uni_location, false, mvp_matrix);
