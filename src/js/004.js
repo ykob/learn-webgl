@@ -59,12 +59,14 @@ const init = () => {
   let far = 100.0;
 
   let time = 0.0;
+  let light_direction = [0.0, 0.0, 0.0];
 
   const m_matrix   = mat4.identity(mat4.create());
   const v_matrix   = mat4.identity(mat4.create());
   const p_matrix   = mat4.identity(mat4.create());
   const mv_matrix  = mat4.identity(mat4.create());
   const mvp_matrix = mat4.identity(mat4.create());
+  const inv_matrix = mat4.identity(mat4.create());
 
   // const move = [0.5, 0.5, 0.0];
   // mat4.translate(m_matrix, m_matrix, move);
@@ -82,7 +84,9 @@ const init = () => {
   const attr_color = gl.getAttribLocation(program, 'color');
   const attr_normal = gl.getAttribLocation(program, 'normal')
   const uni_time = gl.getUniformLocation(program, 'time');
-  const uni_location = gl.getUniformLocation(program, 'mvp_matrix');
+  const uni_mvp_matrix = gl.getUniformLocation(program, 'mvp_matrix');
+  const uni_inv_matrix = gl.getUniformLocation(program, 'inv_matrix');
+  const uni_light_direction = gl.getUniformLocation(program, 'light_direction');
 
   const vertex_buffer = gl.createBuffer();
   const index_buffer = gl.createBuffer();
@@ -108,7 +112,9 @@ const init = () => {
   gl.vertexAttribPointer(attr_normal, 3, gl.FLOAT, false, 0, 0);
 
   gl.uniform1f(uni_time, time);
-  gl.uniformMatrix4fv(uni_location, false, mvp_matrix);
+  gl.uniformMatrix4fv(uni_mvp_matrix, false, mvp_matrix);
+  gl.uniformMatrix4fv(uni_inv_matrix, false, inv_matrix);
+  gl.uniform3fv(uni_light_direction, light_direction);
 
   const render = () => {
     time += 1;
