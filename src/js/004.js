@@ -80,12 +80,14 @@ const init = () => {
   const attr_position = gl.getAttribLocation(program, 'position');
   const attr_index = gl.getAttribLocation(program, 'index');
   const attr_color = gl.getAttribLocation(program, 'color');
+  const attr_normal = gl.getAttribLocation(program, 'normal')
   const uni_time = gl.getUniformLocation(program, 'time');
   const uni_location = gl.getUniformLocation(program, 'mvp_matrix');
 
   const vertex_buffer = gl.createBuffer();
   const index_buffer = gl.createBuffer();
   const color_buffer = gl.createBuffer();
+  const normal_buffer = gl.createBuffer();
 
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
@@ -99,6 +101,11 @@ const init = () => {
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
   gl.enableVertexAttribArray(attr_color);
   gl.vertexAttribPointer(attr_color, 3, gl.FLOAT, false, 0, 0);
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, normal_buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, vertices.length, gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(attr_normal);
+  gl.vertexAttribPointer(attr_normal, 3, gl.FLOAT, false, 0, 0);
 
   gl.uniform1f(uni_time, time);
   gl.uniformMatrix4fv(uni_location, false, mvp_matrix);

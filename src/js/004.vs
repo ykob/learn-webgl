@@ -1,5 +1,6 @@
 attribute vec3 position;
 attribute vec3 color;
+attribute vec3 normal;
 uniform mat4 mvp_matrix;
 uniform float time;
 
