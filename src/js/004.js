@@ -126,7 +126,6 @@ const init = () => {
     time += 1;
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform1f(uni_time, time);
-    gl.drawArrays(gl.LINE_LOOP, 0, vertices.length / 3);
     gl.drawElements(gl.TRIANGLES, indecies.length, gl.UNSIGNED_SHORT, 0);
   };
   const renderLoop = () => {
