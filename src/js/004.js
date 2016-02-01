@@ -4,6 +4,7 @@ import isSupportedWebGL from './modules/isSupportedWebGL.js';
 import loadProgram from './modules/loadProgram.js';
 
 const glMatrix = require('gl-matrix');
+const vec3 = glMatrix.vec3;
 const mat4 = glMatrix.mat4;
 const glslify = require('glslify');
 
@@ -38,16 +39,14 @@ const colors = [
   0.0, 0.0, 1.0,
   0.0, 0.0, 1.0,
 ];
-const normals = [
-  0.0, 0.0, -1.0,
-  0.0, 0.0, -1.0,
-  0.0, 0.0, -1.0,
-  0.0, 0.0, -1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-];
+const normals = [];
+const initNormals = () => {
+  for (let i = 0; i < vertices.length; i += 3) {
+    const v = [0.0, 0.0, 0.0];
+    vec3.normalize(v, [vertices[i + 0], vertices[i + 1], vertices[i + 2]]);
+    normals.push(v[0], v[1], v[2]);
+  }
+};
 
 const init = () => {
   resizeWindow(canvas);
@@ -56,6 +55,8 @@ const init = () => {
   gl.enable(gl.DEPTH_TEST);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
+
+  initNormals();
 
   const center = [0.0, 0.0, 0.0];
   const camera = {
@@ -76,7 +77,6 @@ const init = () => {
   const p_matrix   = mat4.identity(mat4.create());
   const mv_matrix  = mat4.identity(mat4.create());
   const mvp_matrix = mat4.identity(mat4.create());
-  const inv_matrix = mat4.identity(mat4.create());
 
   // const move = [0.5, 0.5, 0.0];
   // mat4.translate(m_matrix, m_matrix, move);
@@ -85,7 +85,6 @@ const init = () => {
   mat4.perspective(p_matrix, fovy, aspect, near, far);
   mat4.multiply(mv_matrix, m_matrix, v_matrix);
   mat4.multiply(mvp_matrix, p_matrix, mv_matrix);
-  mat4.invert(inv_matrix, m_matrix);
 
   const program = loadProgram(gl, glslify('./004.vs'), glslify('./004.fs'));
   const attr_position = gl.getAttribLocation(program, 'position');
@@ -94,7 +93,6 @@ const init = () => {
   const attr_normal = gl.getAttribLocation(program, 'normal');
   const uni_time = gl.getUniformLocation(program, 'time');
   const uni_mvp_matrix = gl.getUniformLocation(program, 'mvp_matrix');
-  const uni_inv_matrix = gl.getUniformLocation(program, 'inv_matrix');
   const uni_light_direction = gl.getUniformLocation(program, 'light_direction');
 
   const vertex_buffer = gl.createBuffer();
@@ -122,7 +120,6 @@ const init = () => {
 
   gl.uniform1f(uni_time, time);
   gl.uniformMatrix4fv(uni_mvp_matrix, false, mvp_matrix);
-  gl.uniformMatrix4fv(uni_inv_matrix, false, inv_matrix);
   gl.uniform3fv(uni_light_direction, light_direction);
 
   const render = () => {
