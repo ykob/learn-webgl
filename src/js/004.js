@@ -38,6 +38,16 @@ const colors = [
   0.0, 0.0, 1.0,
   0.0, 0.0, 1.0,
 ];
+const normals = [
+  0.0, 0.0, -1.0,
+  0.0, 0.0, -1.0,
+  0.0, 0.0, -1.0,
+  0.0, 0.0, -1.0,
+  0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0,
+];
 
 const init = () => {
   resizeWindow(canvas);
@@ -59,7 +69,7 @@ const init = () => {
   let far = 100.0;
 
   let time = 0.0;
-  let light_direction = [0.0, 0.0, 0.0];
+  let light_direction = [1.0, 1.0, 1.0];
 
   const m_matrix   = mat4.identity(mat4.create());
   const v_matrix   = mat4.identity(mat4.create());
@@ -71,18 +81,17 @@ const init = () => {
   // const move = [0.5, 0.5, 0.0];
   // mat4.translate(m_matrix, m_matrix, move);
 
-  mat4.rotateY(m_matrix, m_matrix, Math.PI / 180);
-
   mat4.lookAt(v_matrix, camera.position, center, camera.up);
   mat4.perspective(p_matrix, fovy, aspect, near, far);
   mat4.multiply(mv_matrix, m_matrix, v_matrix);
   mat4.multiply(mvp_matrix, p_matrix, mv_matrix);
+  mat4.invert(inv_matrix, m_matrix);
 
-  const program = loadProgram(gl, glslify('./003.vs'), glslify('./003.fs'));
+  const program = loadProgram(gl, glslify('./004.vs'), glslify('./004.fs'));
   const attr_position = gl.getAttribLocation(program, 'position');
   const attr_index = gl.getAttribLocation(program, 'index');
   const attr_color = gl.getAttribLocation(program, 'color');
-  const attr_normal = gl.getAttribLocation(program, 'normal')
+  const attr_normal = gl.getAttribLocation(program, 'normal');
   const uni_time = gl.getUniformLocation(program, 'time');
   const uni_mvp_matrix = gl.getUniformLocation(program, 'mvp_matrix');
   const uni_inv_matrix = gl.getUniformLocation(program, 'inv_matrix');
@@ -107,7 +116,7 @@ const init = () => {
   gl.vertexAttribPointer(attr_color, 3, gl.FLOAT, false, 0, 0);
 
   gl.bindBuffer(gl.ARRAY_BUFFER, normal_buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, vertices.length, gl.STATIC_DRAW);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
   gl.enableVertexAttribArray(attr_normal);
   gl.vertexAttribPointer(attr_normal, 3, gl.FLOAT, false, 0, 0);
 
