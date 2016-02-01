@@ -1,9 +1,12 @@
+precision mediump float;
+
 attribute vec3 position;
 attribute vec3 color;
 attribute vec3 normal;
 
 uniform float time;
 uniform mat4 mvp_matrix;
+uniform vec3 light_direction;
 
 varying vec3 vNormal;
 varying vec3 vColor;
