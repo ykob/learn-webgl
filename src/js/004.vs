@@ -14,6 +14,6 @@ void main() {
   vNormal = normal;
   vColor = color;
 
-  vec3 update_position = (mv_matrix * vec4(position, 1.0)).xyz;
-  gl_Position = p_matrix * vec4(update_position, 1.0);
+  vec4 mv_position = mv_matrix * vec4(position, 1.0);
+  gl_Position = p_matrix * mv_position;
 }
