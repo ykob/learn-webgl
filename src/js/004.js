@@ -68,6 +68,7 @@ const init = () => {
   let far = 100.0;
 
   let light_direction = [-1.0, 1.0, 1.0];
+  let time = 0;
 
   const m_matrix   = mat4.identity(mat4.create());
   const v_matrix   = mat4.identity(mat4.create());
@@ -105,6 +106,9 @@ const init = () => {
   const uni_light_direction = gl.getUniformLocation(program, 'light_direction');
   gl.uniform3fv(uni_light_direction, light_direction);
 
+  const uni_time = gl.getUniformLocation(program, 'time');
+  gl.uniform1f(uni_time, time);
+
   const attr_position = gl.getAttribLocation(program, 'position');
   const vertex_buffer = gl.createBuffer();
   gl.enableVertexAttribArray(attr_position);
@@ -133,12 +137,14 @@ const init = () => {
   gl.vertexAttribPointer(attr_normal, 3, gl.FLOAT, false, 0, 0);
 
   const render = () => {
+    time ++;
     gl.clear(gl.COLOR_BUFFER_BIT);
     mat4.rotateX(m_matrix, m_matrix, Math.PI / 180 * 1);
     mat4.multiply(mv_matrix, v_matrix, m_matrix);
     mat4.invert(inv_matrix, m_matrix);
     gl.uniformMatrix4fv(uni_mv_matrix, false, mv_matrix);
     gl.uniformMatrix4fv(uni_inv_matrix, false, inv_matrix);
+    gl.uniform1f(uni_time, time);
     gl.drawElements(gl.TRIANGLES, indecies.length, gl.UNSIGNED_SHORT, 0);
   };
   const renderLoop = () => {
