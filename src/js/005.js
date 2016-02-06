@@ -30,14 +30,14 @@ const indecies = [
   5, 6, 4,   7, 4, 6,
 ];
 const colors = [
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
+  0.0, 0.8, 0.8,
+  0.0, 0.8, 0.8,
+  0.0, 0.8, 0.8,
+  0.0, 0.8, 0.8,
+  0.0, 0.8, 0.8,
+  0.0, 0.8, 0.8,
+  0.0, 0.8, 0.8,
+  0.0, 0.8, 0.8,
 ];
 const normals = [];
 const initNormals = () => {
@@ -51,6 +51,10 @@ const initNormals = () => {
 const init = () => {
   resizeWindow(canvas);
   isSupportedWebGL(gl);
+  if(!gl.getExtension('OES_standard_derivatives')){
+    console.log('OES_standard_derivatives is not supported');
+    return;
+  }
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
   gl.enable(gl.DEPTH_TEST);
   gl.clear(gl.COLOR_BUFFER_BIT);
@@ -139,7 +143,16 @@ const init = () => {
   const render = () => {
     time ++;
     gl.clear(gl.COLOR_BUFFER_BIT);
-    mat4.rotateX(m_matrix, m_matrix, Math.PI / 180 * 1);
+    mat4.identity(m_matrix);
+    mat4.scale(
+      m_matrix, m_matrix,
+      [
+        Math.sin(Math.PI / 180 * time * 2) * 0.5 + 1.0,
+        Math.cos(Math.PI / 180 * time * 2) * 0.5 + 1.0,
+        1
+      ]
+    );
+    mat4.rotateX(m_matrix, m_matrix, Math.PI / 180 * time);
     mat4.multiply(mv_matrix, v_matrix, m_matrix);
     mat4.invert(inv_matrix, m_matrix);
     gl.uniformMatrix4fv(uni_mv_matrix, false, mv_matrix);

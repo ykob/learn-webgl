@@ -1,10 +1,12 @@
+#extension GL_OES_standard_derivatives : enable
+
 precision mediump float;
 
 uniform mat4 inv_matrix;
 uniform vec3 light_direction;
 uniform float time;
 
-varying vec3 vNormal;
+varying vec3 vPosition;
 varying vec3 vColor;
 
 vec3 hsv2rgb(vec3 c){
@@ -13,12 +15,12 @@ vec3 hsv2rgb(vec3 c){
   return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-float rand(vec2 co){
-    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
-
 void main() {
+  vec3 custom_color = hsv2rgb(vec3(vColor.x + time / 360.0, vColor.yz));
+  vec3 dx = dFdx(vPosition.xyz);
+  vec3 dy = dFdy(vPosition.xyz);
+  vec3 n = normalize(cross(normalize(dx), normalize(dy)));
   vec3 inv_light = normalize(inv_matrix * vec4(light_direction, 1.0)).xyz;
-  float diff = clamp(dot(inv_light, vNormal), 0.1, 1.0);
-  gl_FragColor = vec4(hsv2rgb(vColor) * diff * rand(gl_FragCoord.xy * (time / 1000.0)), 1.0);
+  float diff = clamp(dot(n, inv_light), 0.1, 1.0);
+  gl_FragColor = vec4(custom_color * diff, 1.0);
 }
