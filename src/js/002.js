@@ -44,7 +44,7 @@ const init = () => {
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
-  const program = loadProgram(gl, glslify('./002.vs'), glslify('./002.fs'));
+  const program = loadProgram(gl, glslify('../glsl/002.vs'), glslify('../glsl/002.fs'));
   const attr_position = gl.getAttribLocation(program, 'position');
   const vertex_buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);

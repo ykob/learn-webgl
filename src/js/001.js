@@ -28,7 +28,7 @@ const init = () => {
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 
-  const program = loadProgram(gl, glslify('./001.vs'), glslify('./001.fs'));
+  const program = loadProgram(gl, glslify('../glsl/001.vs'), glslify('../glsl/001.fs'));
 
   const attr_position = gl.getAttribLocation(program, 'position');
   gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);

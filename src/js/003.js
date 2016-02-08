@@ -76,7 +76,7 @@ const init = () => {
   mat4.multiply(mv_matrix, m_matrix, v_matrix);
   mat4.multiply(mvp_matrix, p_matrix, mv_matrix);
 
-  const program = loadProgram(gl, glslify('./003.vs'), glslify('./003.fs'));
+  const program = loadProgram(gl, glslify('../glsl/003.vs'), glslify('../glsl/003.fs'));
   const attr_position = gl.getAttribLocation(program, 'position');
   const attr_index = gl.getAttribLocation(program, 'index');
   const attr_color = gl.getAttribLocation(program, 'color');

@@ -87,7 +87,7 @@ const init = () => {
   mat4.multiply(mvp_matrix, p_matrix, mv_matrix);
   mat4.invert(inv_matrix, m_matrix);
 
-  const program = loadProgram(gl, glslify('./005.vs'), glslify('./005.fs'));
+  const program = loadProgram(gl, glslify('../glsl/005.vs'), glslify('../glsl/005.fs'));
 
   const uni_m_matrix = gl.getUniformLocation(program, 'm_matrix');
   gl.uniformMatrix4fv(uni_m_matrix, false, m_matrix);
