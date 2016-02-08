@@ -125,7 +125,6 @@ const init = () => {
   const index_buffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indecies), gl.STATIC_DRAW);
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
   const attr_color = gl.getAttribLocation(program, 'color');
   const color_buffer = gl.createBuffer();
