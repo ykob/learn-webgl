@@ -1,9 +1,36 @@
+@import url(http://fonts.googleapis.com/earlyaccess/notosansjapanese.css);
+
 html {
   height: 100%;
 }
 body {
   height: 100%;
   margin: 0;
+  color: #fff;
+  font-family: 'Noto Sans Japanese', sans-serif;
+  background-color: #222;
+}
+a {
+  color: #fff;
+  transition: 0.3s;
+}
+.index {
+  padding: 40px 20px;
+  &__title {
+    margin: 0 0 40px;
+    font-size: 42px;
+    font-weight: 100;
+    text-align: center;
+    letter-spacing: 6px;
+  }
+  &__list {
+    max-width: 300px;
+    margin: 0 auto;
+    letter-spacing: 2px;
+    li {
+      margin-top: 1em;
+    }
+  }
 }
 canvas {
   position: absolute;
@@ -17,13 +44,13 @@ canvas {
   position: absolute;
   top: 20px;
   left: 20px;
-  padding: 2em;
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.1);
   &__title {
     margin: 0;
+    font-weight: 100;
+    letter-spacing: 4px;
   }
   &__summary {
     margin: 1em 0 0;
+    letter-spacing: 2px;
   }
 }
