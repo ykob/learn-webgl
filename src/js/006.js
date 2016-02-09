@@ -138,7 +138,6 @@ const init = () => {
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture_img);
     gl.generateMipmap(gl.TEXTURE_2D);
-    gl.bindTexture(gl.TEXTURE_2D, null);
   }
   texture_img.src = 'img/texture.png';
 
@@ -152,8 +151,6 @@ const init = () => {
     gl.uniformMatrix4fv(uni_mv_matrix, false, mv_matrix);
     gl.uniformMatrix4fv(uni_inv_matrix, false, inv_matrix);
     gl.uniform1f(uni_time, time);
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.uniform1i(uni_texture, 0);
     gl.drawElements(gl.TRIANGLES, indecies.length, gl.UNSIGNED_SHORT, 0);
   };
   const renderLoop = () => {
