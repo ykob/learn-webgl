@@ -12,7 +12,7 @@ varying vec3 vColor;
 #pragma glslify: hsv2rgb = require(./module/hsv2rgb)
 
 void main() {
-  vec3 custom_color = hsv2rgb(vec3(vColor.x + time / 360.0, vColor.yz));
+  vec3 custom_color = hsv2rgb(vColor);
   vec3 dx = dFdx(vPosition.xyz);
   vec3 dy = dFdy(vPosition.xyz);
   vec3 n = normalize(cross(normalize(dx), normalize(dy)));

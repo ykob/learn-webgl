@@ -12,32 +12,19 @@ const canvas = document.getElementById('webgl-contents');
 const gl = canvas.getContext('webgl');
 
 const vertices = [
-  -0.5,  0.5, -0.5,
-   0.5,  0.5, -0.5,
-   0.5, -0.5, -0.5,
-  -0.5, -0.5, -0.5,
-  -0.5,  0.5,  0.5,
-   0.5,  0.5,  0.5,
-   0.5, -0.5,  0.5,
-  -0.5, -0.5,  0.5,
+  -1.0,  1.0, 0.0,
+   1.0,  1.0, 0.0,
+   1.0, -1.0, 0.0,
+  -1.0, -1.0, 0.0,
 ];
 const indecies = [
   0, 3, 1,   2, 1, 3,
-  4, 0, 5,   1, 5, 0,
-  1, 2, 5,   6, 5, 2,
-  4, 7, 0,   3, 0, 7,
-  3, 7, 2,   6, 2, 7,
-  5, 6, 4,   7, 4, 6,
 ];
 const colors = [
-  0.0, 0.8, 0.8,
-  0.0, 0.8, 0.8,
-  0.0, 0.8, 0.8,
-  0.0, 0.8, 0.8,
-  0.0, 0.8, 0.8,
-  0.0, 0.8, 0.8,
-  0.0, 0.8, 0.8,
-  0.0, 0.8, 0.8,
+  0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0,
+  0.0, 0.0, 1.0,
 ];
 const normals = [];
 const initNormals = () => {
@@ -71,7 +58,7 @@ const init = () => {
   let near = 0.1;
   let far = 100.0;
 
-  let light_direction = [-1.0, 1.0, 1.0];
+  let light_direction = [1.0, 1.0, 1.0];
   let time = 0;
 
   const m_matrix   = mat4.identity(mat4.create());
@@ -147,15 +134,7 @@ const init = () => {
     time ++;
     gl.clear(gl.COLOR_BUFFER_BIT);
     mat4.identity(m_matrix);
-    mat4.scale(
-      m_matrix, m_matrix,
-      [
-        Math.sin(Math.PI / 180 * time * 2) * 0.5 + 1.0,
-        Math.cos(Math.PI / 180 * time * 2) * 0.5 + 1.0,
-        1
-      ]
-    );
-    mat4.rotateX(m_matrix, m_matrix, Math.PI / 180 * time);
+    mat4.rotateY(m_matrix, m_matrix, Math.PI / 180 * time / 2);
     mat4.multiply(mv_matrix, v_matrix, m_matrix);
     mat4.invert(inv_matrix, m_matrix);
     gl.uniformMatrix4fv(uni_mv_matrix, false, mv_matrix);
