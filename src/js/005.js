@@ -39,14 +39,6 @@ const colors = [
   0.0, 0.8, 0.8,
   0.0, 0.8, 0.8,
 ];
-const normals = [];
-const initNormals = () => {
-  for (let i = 0; i < vertices.length; i += 3) {
-    const v = [0.0, 0.0, 0.0];
-    vec3.normalize(v, [vertices[i + 0], vertices[i + 1], vertices[i + 2]]);
-    normals.push(v[0], v[1], v[2]);
-  }
-};
 
 const init = () => {
   resizeWindow(canvas);
@@ -131,14 +123,6 @@ const init = () => {
   gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
   gl.vertexAttribPointer(attr_color, 3, gl.FLOAT, false, 0, 0);
-
-  initNormals();
-  const attr_normal = gl.getAttribLocation(program, 'normal');
-  const normal_buffer = gl.createBuffer();
-  gl.enableVertexAttribArray(attr_normal);
-  gl.bindBuffer(gl.ARRAY_BUFFER, normal_buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
-  gl.vertexAttribPointer(attr_normal, 3, gl.FLOAT, false, 0, 0);
 
   const render = () => {
     time ++;
