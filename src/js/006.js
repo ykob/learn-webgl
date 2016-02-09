@@ -12,25 +12,43 @@ const canvas = document.getElementById('webgl-contents');
 const gl = canvas.getContext('webgl');
 
 const vertices = [
-  -1.0,  1.0, 0.0,
-   1.0,  1.0, 0.0,
-  -1.0, -1.0, 0.0,
-   1.0, -1.0, 0.0,
+  -1.0,  1.0,   1.0,
+   1.0,  1.0,   1.0,
+  -1.0, -1.0,   1.0,
+   1.0, -1.0,   1.0,
+  -1.0,  1.0,  -1.0,
+   1.0,  1.0,  -1.0,
+  -1.0, -1.0,  -1.0,
+   1.0, -1.0,  -1.0,
 ];
 const indecies = [
-  0, 1, 2,   3, 2, 1,
+  0, 1, 2,  3, 2, 1,
+  5, 4, 7,  6, 7, 4,
+  4, 5, 0,  1, 0, 5,
+  2, 3, 6,  7, 6, 3,
+  5, 7, 1,  3, 1, 7,
+  6, 4, 2,  0, 2, 4,
 ];
 const colors = [
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
-  0.0, 0.0, 1.0,
+  0.0, 0.3, 1.0,
+  0.0, 0.3, 1.0,
+  0.0, 0.3, 1.0,
+  0.0, 0.3, 1.0,
+  0.5, 0.3, 1.0,
+  0.5, 0.3, 1.0,
+  0.5, 0.3, 1.0,
+  0.5, 0.3, 1.0,
 ];
 const uvs = [
   0.0, 0.0,
-  3.0, 0.0,
-  0.0, 3.0,
-  3.0, 3.0,
+  1.0, 0.0,
+  0.0, 1.0,
+  1.0, 1.0,
+
+  1.0, 0.0,
+  0.0, 0.0,
+  1.0, 1.0,
+  0.0, 1.0,
 ];
 
 const init = () => {
@@ -108,7 +126,6 @@ const init = () => {
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
   gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
   const attr_index = gl.getAttribLocation(program, 'index');
   const index_buffer = gl.createBuffer();
@@ -121,7 +138,6 @@ const init = () => {
   gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
   gl.vertexAttribPointer(attr_color, 3, gl.FLOAT, false, 0, 0);
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
   const attr_uv = gl.getAttribLocation(program, 'uv');
   const uv_buffer = gl.createBuffer();
@@ -129,7 +145,6 @@ const init = () => {
   gl.bindBuffer(gl.ARRAY_BUFFER, uv_buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW);
   gl.vertexAttribPointer(attr_uv, 2, gl.FLOAT, false, 0, 0);
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
   const texture_img = new Image();
   let texture = null;
