@@ -14,11 +14,11 @@ const gl = canvas.getContext('webgl');
 const vertices = [
   -1.0,  1.0, 0.0,
    1.0,  1.0, 0.0,
-   1.0, -1.0, 0.0,
   -1.0, -1.0, 0.0,
+   1.0, -1.0, 0.0,
 ];
 const indecies = [
-  0, 3, 1,   2, 1, 3,
+  0, 1, 2,   3, 2, 1,
 ];
 const colors = [
   0.0, 0.0, 1.0,
@@ -26,14 +26,12 @@ const colors = [
   0.0, 0.0, 1.0,
   0.0, 0.0, 1.0,
 ];
-const normals = [];
-const initNormals = () => {
-  for (let i = 0; i < vertices.length; i += 3) {
-    const v = [0.0, 0.0, 0.0];
-    vec3.normalize(v, [vertices[i + 0], vertices[i + 1], vertices[i + 2]]);
-    normals.push(v[0], v[1], v[2]);
-  }
-};
+const uvs = [
+  0.0, 0.0,
+  3.0, 0.0,
+  0.0, 3.0,
+  3.0, 3.0,
+];
 
 const init = () => {
   resizeWindow(canvas);
@@ -100,6 +98,10 @@ const init = () => {
   const uni_time = gl.getUniformLocation(program, 'time');
   gl.uniform1f(uni_time, time);
 
+  const uni_texture = gl.getUniformLocation(program, 'texture');
+  gl.activeTexture(gl.TEXTURE0);
+  gl.uniform1i(uni_texture, 0);
+
   const attr_position = gl.getAttribLocation(program, 'position');
   const vertex_buffer = gl.createBuffer();
   gl.enableVertexAttribArray(attr_position);
@@ -121,14 +123,24 @@ const init = () => {
   gl.vertexAttribPointer(attr_color, 3, gl.FLOAT, false, 0, 0);
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-  initNormals();
-  const attr_normal = gl.getAttribLocation(program, 'normal');
-  const normal_buffer = gl.createBuffer();
-  gl.enableVertexAttribArray(attr_normal);
-  gl.bindBuffer(gl.ARRAY_BUFFER, normal_buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
-  gl.vertexAttribPointer(attr_normal, 3, gl.FLOAT, false, 0, 0);
+  const attr_uv = gl.getAttribLocation(program, 'uv');
+  const uv_buffer = gl.createBuffer();
+  gl.enableVertexAttribArray(attr_uv);
+  gl.bindBuffer(gl.ARRAY_BUFFER, uv_buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW);
+  gl.vertexAttribPointer(attr_uv, 2, gl.FLOAT, false, 0, 0);
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+  const texture_img = new Image();
+  let texture = null;
+  texture_img.onload = () => {
+    texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture_img);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    gl.bindTexture(gl.TEXTURE_2D, null);
+  }
+  texture_img.src = 'img/texture.png';
 
   const render = () => {
     time ++;
@@ -140,6 +152,8 @@ const init = () => {
     gl.uniformMatrix4fv(uni_mv_matrix, false, mv_matrix);
     gl.uniformMatrix4fv(uni_inv_matrix, false, inv_matrix);
     gl.uniform1f(uni_time, time);
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.uniform1i(uni_texture, 0);
     gl.drawElements(gl.TRIANGLES, indecies.length, gl.UNSIGNED_SHORT, 0);
   };
   const renderLoop = () => {
