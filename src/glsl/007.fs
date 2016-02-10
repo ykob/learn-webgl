@@ -3,7 +3,6 @@ precision mediump float;
 uniform float time;
 
 varying vec3 vPosition;
-varying vec3 vColor;
 
 #pragma glslify: hsv2rgb = require(./module/hsv2rgb)
 #pragma glslify: snoise2 = require(glsl-noise/simplex/2d)
@@ -17,7 +16,8 @@ varying vec3 vColor;
 #pragma glslify: pnoise4 = require(glsl-noise/periodic/4d)
 
 void main() {
-  float noise = snoise3(vec3(vPosition.x * (sin(radians(time)) * 0.2 + 2.0), vPosition.y * (cos(radians(time)) * 0.2 + 2.0), vPosition.z + time / 100.0));
-  vec3 custom_color = hsv2rgb(vec3(vColor.x + noise / 2.0, vColor.yz));
+  vec3 hsv = vec3(0.0, 0.8, 1.0);
+  float noise = snoise3(vec3(vPosition.x, vPosition.y * (cos(radians(time * 10.0)) * 0.1 + 200.0), vPosition.z + time / 100.0));
+  vec3 custom_color = hsv2rgb(vec3(hsv.x - (noise / 5.0), hsv.y - (noise / 2.0 + 0.28), hsv.z - (noise / 3.0 + 0.1)));
   gl_FragColor = vec4(custom_color, 1.0);
 }

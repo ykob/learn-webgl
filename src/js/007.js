@@ -20,12 +20,6 @@ const vertices = [
 const indecies = [
   0, 1, 2,  3, 2, 1,
 ];
-const colors = [
-  0.0, 0.6, 1.0,
-  0.0, 0.6, 1.0,
-  0.0, 0.6, 1.0,
-  0.0, 0.6, 1.0,
-];
 
 const init = () => {
   resizeWindow(canvas);
@@ -68,13 +62,6 @@ const init = () => {
   const index_buffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indecies), gl.STATIC_DRAW);
-
-  const attr_color = gl.getAttribLocation(program, 'color');
-  const color_buffer = gl.createBuffer();
-  gl.enableVertexAttribArray(attr_color);
-  gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
-  gl.vertexAttribPointer(attr_color, 3, gl.FLOAT, false, 0, 0);
 
   const render = () => {
     time ++;
