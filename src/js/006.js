@@ -12,22 +12,18 @@ const canvas = document.getElementById('webgl-contents');
 const gl = canvas.getContext('webgl');
 
 const vertices = [
-  -1.0,  1.0,   1.0,
-   1.0,  1.0,   1.0,
-  -1.0, -1.0,   1.0,
-   1.0, -1.0,   1.0,
-  -1.0,  1.0,  -1.0,
-   1.0,  1.0,  -1.0,
-  -1.0, -1.0,  -1.0,
-   1.0, -1.0,  -1.0,
+  -1.0,  1.0, 0.0,
+   1.0,  1.0, 0.0,
+  -1.0, -1.0, 0.0,
+   1.0, -1.0, 0.0,
+   1.0,  1.0, 0.0,
+  -1.0,  1.0, 0.0,
+   1.0, -1.0, 0.0,
+  -1.0, -1.0, 0.0,
 ];
 const indecies = [
   0, 1, 2,  3, 2, 1,
-  5, 4, 7,  6, 7, 4,
-  4, 5, 0,  1, 0, 5,
-  2, 3, 6,  7, 6, 3,
-  5, 7, 1,  3, 1, 7,
-  6, 4, 2,  0, 2, 4,
+  4, 5, 6,  7, 6, 5,
 ];
 const colors = [
   0.0, 0.3, 1.0,
@@ -40,11 +36,10 @@ const colors = [
   0.5, 0.3, 1.0,
 ];
 const uvs = [
-  0.0, 0.0,
   1.0, 0.0,
-  0.0, 1.0,
+  0.0, 0.0,
   1.0, 1.0,
-
+  0.0, 1.0,
   1.0, 0.0,
   0.0, 0.0,
   1.0, 1.0,
@@ -60,6 +55,7 @@ const init = () => {
   }
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
   gl.enable(gl.DEPTH_TEST);
+  gl.enable(gl.CULL_FACE);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
