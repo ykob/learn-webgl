@@ -21,11 +21,11 @@ const init = () => {
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
-  for (var i = 0; i < 1000; i++) {
+  for (var i = 0; i < 200; i++) {
     vertices.push(
-      Math.random() * 1000 - 500,
-      Math.random() * 1000 - 500,
-      Math.random() * 1000 - 500
+      Math.random() * 2000 - 1000,
+      Math.random() * 2000 - 1000,
+      Math.random() * 2000 - 1000
     );
     colors.push(1, 1, 1);
   }
@@ -92,7 +92,7 @@ const init = () => {
     time ++;
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform1f(uni_time, time);
-    gl.drawArrays(gl.LINES, 0, vertices.length / 3);
+    gl.drawArrays(gl.LINE_LOOP, 0, vertices.length / 3);
   };
   const renderLoop = () => {
     render();
