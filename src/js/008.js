@@ -18,12 +18,16 @@ const init = () => {
   resizeWindow(canvas);
   isSupportedWebGL(gl);
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
+  gl.enable(gl.BLEND);
+  gl.enable(gl.DEPTH_TEST);
+  gl.depthFunc(gl.LESS);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
-  for (var i = 0; i < 100; i++) {
+  for (var i = 0; i < 3000; i++) {
     const v = Util.getPolar(
-      Math.PI / 180 * (Math.random() * 120 + 30),
+      Math.PI / 180 * (Math.random() * 150 + 15),
       Math.PI / 180 * (Math.random() * 360),
       500
     );
