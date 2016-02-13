@@ -24,8 +24,8 @@ void main() {
   vPosition = position;
   vColor = color;
 
-  float update_time = time / 200.0;
-  float noise = snoise3(vec3(position.x + update_time, position.y + update_time, position.z + update_time));
+  float update_time = time / 150.0;
+  float noise = snoise2(vec2(position.x + update_time));
   vec4 mv_position = mv_matrix * vec4(position * noise, 1.0);
   gl_Position = p_matrix * mv_position;
 }

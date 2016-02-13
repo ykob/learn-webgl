@@ -21,13 +21,13 @@ const init = () => {
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
-  for (var i = 0; i < 200; i++) {
+  for (var i = 0; i < 50; i++) {
     vertices.push(
-      Math.random() * 2000 - 1000,
-      Math.random() * 2000 - 1000,
-      Math.random() * 2000 - 1000
+      Math.random() * 1600 - 800,
+      Math.random() * 1600 - 800,
+      Math.random() * 1600 - 800
     );
-    colors.push(1, 1, 1);
+    colors.push(i * 0.003, 0.8, 0.8);
   }
 
   const center = [0.0, 0.0, 0.0];
