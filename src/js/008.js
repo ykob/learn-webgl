@@ -21,18 +21,19 @@ const init = () => {
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
-  for (var i = 0; i < 50; i++) {
-    vertices.push(
-      Math.random() * 1600 - 800,
-      Math.random() * 1600 - 800,
-      Math.random() * 1600 - 800
+  for (var i = 0; i < 100; i++) {
+    const v = Util.getPolar(
+      Math.PI / 180 * (Math.random() * 120 + 30),
+      Math.PI / 180 * (Math.random() * 360),
+      500
     );
-    colors.push(i * 0.003, 0.8, 0.8);
+    vertices.push(v[0], v[1], v[2]);
+    colors.push(Math.random() * 0.3, 0.8, 0.8);
   }
 
   const center = [0.0, 0.0, 0.0];
   const camera = {
-    position: [2000.0, 0.0, 0.0],
+    position: [1000.0, 0.0, 0.0],
     up: [0.0, 1.0, 0.0]
   };
 
