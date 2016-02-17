@@ -17,7 +17,7 @@ const colors = [];
 const init = () => {
   resizeWindow(canvas);
   isSupportedWebGL(gl);
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);
+  gl.clearColor(0.95, 0.95, 0.95, 1.0);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
@@ -27,7 +27,7 @@ const init = () => {
       Math.random() * 2 - 1,
       0
     );
-    colors.push(Math.random() * 0.5 + 0.25, 0.8, 0.8);
+    colors.push(0.0, 0.2, 0.8);
   }
 
   let time = 0;

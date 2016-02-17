@@ -21,12 +21,12 @@ varying vec3 vColor;
 #pragma glslify: hsv2rgb = require(./module/hsv2rgb)
 
 void main() {
-  float update_time = time / 1000.0 * 2.0;
-  float noise = snoise3(vec3(position + update_time));
+  float update_time = time / 1000.0;
+  float noise = snoise3(vec3(position + update_time * 2.0)) * 0.6;
 
   vPosition = position;
   vColor = hsv2rgb(vec3(color.x + update_time, color.yz));
 
   gl_PointSize = 1.0;
-  gl_Position = vec4(position * noise, 1.0);
+  gl_Position = vec4(position.x, position.x + noise - 0.3, position.z, 1.0);
 }
