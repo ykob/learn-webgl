@@ -3,9 +3,6 @@ import resizeWindow from './modules/resizeWindow.js';
 import isSupportedWebGL from './modules/isSupportedWebGL.js';
 import loadProgram from './modules/loadProgram.js';
 
-const glMatrix = require('gl-matrix');
-const vec3 = glMatrix.vec3;
-const mat4 = glMatrix.mat4;
 const glslify = require('glslify');
 
 const canvas = document.getElementById('webgl-contents');
@@ -18,18 +15,18 @@ const init = () => {
   resizeWindow(canvas);
   isSupportedWebGL(gl);
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
-  gl.enable(gl.BLEND);
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LESS);
+  gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
   for (var i = 0; i < 50000; i++) {
     const v = Util.getPolar(
-      Math.PI / 180 * (Math.random() * 100 + 40),
+      Math.PI / 180 * (Math.random() * 150 + 15),
       Math.PI / 180 * (Math.random() * 360),
-      1200
+      450
     );
     vertices.push(v[0], v[1], v[2]);
   }
@@ -40,7 +37,7 @@ const init = () => {
     up: [0.0, 1.0, 0.0]
   };
 
-  let fovy = 10;
+  let fovy = 30;
   let aspect = canvas.width / canvas.height;
   let near = 0.1;
   let far = 10000.0;
@@ -89,7 +86,7 @@ const init = () => {
     time ++;
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform1f(uni_time, time);
-    gl.drawArrays(gl.LINE_LOOP, 0, vertices.length / 3);
+    gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 3);
   };
   const renderLoop = () => {
     render();

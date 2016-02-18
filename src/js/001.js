@@ -2,8 +2,8 @@ import resizeWindow from './modules/resizeWindow.js';
 import isSupportedWebGL from './modules/isSupportedWebGL.js';
 import loadProgram from './modules/loadProgram.js';
 
-const glMatrix = require('gl-matrix');
-const mat4 = glMatrix.mat4;
+// const glMatrix = require('gl-matrix');
+// const mat4 = glMatrix.mat4;
 const glslify = require('glslify');
 
 const canvas = document.getElementById('webgl-contents');

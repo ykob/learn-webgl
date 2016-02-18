@@ -39,7 +39,6 @@
     "watchify": "^3.6.1"
   },
   "dependencies": {
-    "gl-matrix": "^2.3.1",
     "glsl-curl-noise": "0.0.4",
     "glsl-noise": "0.0.0",
     "glslify": "^5.0.0"
