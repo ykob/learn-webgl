@@ -19,7 +19,7 @@ void main() {
   vec4 mv_position = mv_matrix * vec4(position * (noise * 0.3 + 1.0), 1.0);
 
   vPosition = position;
-  vColor = hsv2rgb(vec3(noise, 0.5, 1.0));
+  vColor = hsv2rgb(vec3(noise + update_time, 0.5, 1.0));
   vMvPosition = mv_position;
 
   gl_PointSize = 1.0;
