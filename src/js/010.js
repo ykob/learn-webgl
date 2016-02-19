@@ -9,7 +9,6 @@ const canvas = document.getElementById('webgl-contents');
 const gl = canvas.getContext('webgl');
 
 const vertices = [];
-const colors = [];
 
 const init = () => {
   resizeWindow(canvas);
