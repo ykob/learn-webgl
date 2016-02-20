@@ -21,7 +21,7 @@ const init = () => {
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
-  for (var i = 0; i < 50000; i++) {
+  for (var i = 0; i < 12000; i++) {
     const v = Util.getPolar(
       Math.PI / 180 * (Math.random() * 150 + 15),
       Math.PI / 180 * (Math.random() * 360),
