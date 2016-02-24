@@ -50,6 +50,7 @@ module.exports.scripts = {
     `./${DIR.SRC}/js/009.js`,
     `./${DIR.SRC}/js/010.js`,
     `./${DIR.SRC}/js/011.js`,
+    `./${DIR.SRC}/js/012.js`,
   ],
   browserifyOpts: {
     transform: [
