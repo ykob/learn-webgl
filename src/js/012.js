@@ -23,14 +23,14 @@ const indecies = [
   4, 5, 6,  7, 6, 5,
 ];
 const colors = [
-  0.0, 0.3, 1.0,
-  0.0, 0.3, 1.0,
-  0.0, 0.3, 1.0,
-  0.0, 0.3, 1.0,
-  0.5, 0.3, 1.0,
-  0.5, 0.3, 1.0,
-  0.5, 0.3, 1.0,
-  0.5, 0.3, 1.0,
+  0.0, 0.5, 1.0,
+  0.0, 0.5, 1.0,
+  0.0, 0.5, 1.0,
+  0.0, 0.5, 1.0,
+  0.5, 0.5, 1.0,
+  0.5, 0.5, 1.0,
+  0.5, 0.5, 1.0,
+  0.5, 0.5, 1.0,
 ];
 const uvs = [
   1.0, 0.0,
@@ -101,6 +101,14 @@ const init = () => {
   let aspect = canvas.width / canvas.height;
   let near = 0.1;
   let far = 100.0;
+
+  for (var i = 0; i < uvs.length; i++) {
+    if (window.innerWidth > window.innerHeight) {
+      if (i % 2 == 1) uvs[i] /= aspect;
+    } else {
+      if (i % 2 == 0) uvs[i] *= aspect;
+    }
+  }
 
   let light_direction = [1.0, 1.0, 1.0];
   let time = 0;
