@@ -30,17 +30,6 @@ const init = () => {
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.viewport(0, 0, canvas.width, canvas.height);
 
-  const center = [0.0, 0.0, 0.0];
-  const camera = {
-    position: [0.0, 0.0, -3.0],
-    up: [0.0, 1.0, 0.0]
-  };
-
-  let fovy = 45;
-  let aspect = canvas.width / canvas.height;
-  let near = 0.1;
-  let far = 100.0;
-
   let time = 0;
 
   const program = loadProgram(gl, glslify('../glsl/007.vs'), glslify('../glsl/007.fs'));
