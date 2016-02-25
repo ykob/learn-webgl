@@ -93,7 +93,7 @@ const init = () => {
 
   const center = [0.0, 0.0, 0.0];
   const camera = {
-    position: [2.0, 2.0, 4.0],
+    position: [2.5, -1.0, 2.5],
     up: [0.0, 1.0, 0.0]
   };
 
@@ -197,16 +197,6 @@ const init = () => {
   gl.vertexAttribPointer(attr_uv, 2, gl.FLOAT, false, 0, 0);
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-  const texture_img = new Image();
-  let texture = null;
-  texture_img.onload = () => {
-    texture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture_img);
-    gl.generateMipmap(gl.TEXTURE_2D);
-  }
-  texture_img.src = 'img/texture.png';
-
   const frame_buffer = createFrameBuffer(512, 512);
 
   const render = () => {
@@ -255,7 +245,6 @@ const init = () => {
     gl.bindTexture(gl.TEXTURE_2D, frame_buffer.t);
 
     mat4.identity(m_matrix);
-    mat4.rotateX(m_matrix, m_matrix, Math.PI / 180 * time / 4);
     mat4.rotateY(m_matrix, m_matrix, Math.PI / 180 * time / 2);
     mat4.multiply(mv_matrix, v_matrix, m_matrix);
     mat4.invert(inv_matrix, m_matrix);
