@@ -51,6 +51,11 @@ const vertices2 = [
 const indecies2 = [
   0, 1, 2,  3, 2, 1,
 ];
+const setArrayBuffer = (buffer, array, length) => {
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.enableVertexAttribArray(array);
+  gl.vertexAttribPointer(array, length, gl.FLOAT, false, 0, 0);
+};
 const createFrameBuffer = (width, height) => {
   const frame_buffer = gl.createFramebuffer();
   gl.bindFramebuffer(gl.FRAMEBUFFER, frame_buffer);
@@ -212,9 +217,7 @@ const init = () => {
 
     gl.useProgram(program2);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer2);
-    gl.enableVertexAttribArray(attr_position2);
-    gl.vertexAttribPointer(attr_position2, 3, gl.FLOAT, false, 0, 0);
+    setArrayBuffer(vertex_buffer2, attr_position2, 3);
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer2);
 
@@ -230,17 +233,9 @@ const init = () => {
 
     gl.useProgram(program);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-    gl.vertexAttribPointer(attr_position, 3, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(attr_position);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
-    gl.vertexAttribPointer(attr_color, 3, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(attr_color);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, uv_buffer);
-    gl.enableVertexAttribArray(attr_uv);
-    gl.vertexAttribPointer(attr_uv, 2, gl.FLOAT, false, 0, 0);
+    setArrayBuffer(vertex_buffer, attr_position, 3);
+    setArrayBuffer(color_buffer, attr_color, 3);
+    setArrayBuffer(uv_buffer, attr_uv, 2);
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
 
