@@ -51,6 +51,16 @@ const vertices2 = [
 const indecies2 = [
   0, 1, 2,  3, 2, 1,
 ];
+const createVBO = (buffer, array) => {
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, array, gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+};
+const createIBO = (buffer, array) => {
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, array, gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+};
 const setArrayBuffer = (buffer, array, length) => {
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.enableVertexAttribArray(array);
@@ -138,17 +148,11 @@ const init = () => {
 
   const attr_position2 = gl.getAttribLocation(program2, 'position');
   const vertex_buffer2 = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer2);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices2), gl.STATIC_DRAW);
-
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  createVBO(vertex_buffer2, new Float32Array(vertices2));
 
   const attr_index2 = gl.getAttribLocation(program2, 'index');
   const index_buffer2 = gl.createBuffer();
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer2);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indecies2), gl.STATIC_DRAW);
-
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+  createIBO(index_buffer2, new Uint16Array(indecies2));
 
   const program = loadProgram(gl, glslify('../glsl/012.vs'), glslify('../glsl/012.fs'));
 
@@ -182,25 +186,21 @@ const init = () => {
 
   const attr_position = gl.getAttribLocation(program, 'position');
   const vertex_buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+  createVBO(vertex_buffer, new Float32Array(vertices));
 
   const attr_color = gl.getAttribLocation(program, 'color');
   const color_buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+  createVBO(color_buffer, new Float32Array(colors));
 
   const attr_uv = gl.getAttribLocation(program, 'uv');
   const uv_buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, uv_buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW);
+  createVBO(uv_buffer, new Float32Array(uvs));
 
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
   const attr_index = gl.getAttribLocation(program, 'index');
   const index_buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indecies), gl.STATIC_DRAW);
+  createIBO(index_buffer, new Uint16Array(indecies));
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
