@@ -51,15 +51,19 @@ const vertices2 = [
 const indecies2 = [
   0, 1, 2,  3, 2, 1,
 ];
-const createVBO = (buffer, array) => {
+const createVBO = (array) => {
+  const buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, array, gl.STATIC_DRAW);
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  return buffer;
 };
-const createIBO = (buffer, array) => {
+const createIBO = (array) => {
+  const buffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, array, gl.STATIC_DRAW);
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+  return buffer;
 };
 const setArrayBuffer = (buffer, array, length) => {
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -147,12 +151,10 @@ const init = () => {
   gl.uniform1f(uni_time2, time);
 
   const attr_position2 = gl.getAttribLocation(program2, 'position');
-  const vertex_buffer2 = gl.createBuffer();
-  createVBO(vertex_buffer2, new Float32Array(vertices2));
+  const vertex_buffer2 = createVBO(new Float32Array(vertices2));
 
   const attr_index2 = gl.getAttribLocation(program2, 'index');
-  const index_buffer2 = gl.createBuffer();
-  createIBO(index_buffer2, new Uint16Array(indecies2));
+  const index_buffer2 = createIBO(new Uint16Array(indecies2));
 
   const program = loadProgram(gl, glslify('../glsl/012.vs'), glslify('../glsl/012.fs'));
 
@@ -185,24 +187,16 @@ const init = () => {
   gl.uniform1i(uni_texture, 0);
 
   const attr_position = gl.getAttribLocation(program, 'position');
-  const vertex_buffer = gl.createBuffer();
-  createVBO(vertex_buffer, new Float32Array(vertices));
+  const vertex_buffer = createVBO(new Float32Array(vertices));
 
   const attr_color = gl.getAttribLocation(program, 'color');
-  const color_buffer = gl.createBuffer();
-  createVBO(color_buffer, new Float32Array(colors));
+  const color_buffer = createVBO(new Float32Array(colors));
 
   const attr_uv = gl.getAttribLocation(program, 'uv');
-  const uv_buffer = gl.createBuffer();
-  createVBO(uv_buffer, new Float32Array(uvs));
-
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  const uv_buffer = createVBO(new Float32Array(uvs));
 
   const attr_index = gl.getAttribLocation(program, 'index');
-  const index_buffer = gl.createBuffer();
-  createIBO(index_buffer, new Uint16Array(indecies));
-
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+  const index_buffer = createIBO(new Uint16Array(indecies));
 
   const frame_buffer = createFrameBuffer(512, 512);
 
@@ -212,8 +206,8 @@ const init = () => {
     gl.bindFramebuffer(gl.FRAMEBUFFER, frame_buffer.f);
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
-		gl.clearDepth(1.0);
-		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.clearDepth(1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     gl.useProgram(program2);
 
@@ -228,8 +222,8 @@ const init = () => {
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
-		gl.clearDepth(1.0);
-		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.clearDepth(1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     gl.useProgram(program);
 
