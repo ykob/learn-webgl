@@ -12,6 +12,9 @@ const float fov = angle * 0.5 * PI / 180.0;
 
 const vec3 lightDir = vec3(0.577, -0.577, 0.577);
 
+#pragma glslify: snoise3 = require(glsl-noise/simplex/3d)
+#pragma glslify: hsv2rgb = require(./module/hsv2rgb)
+
 vec3 trans(vec3 p) {
   return mod(vec3(p), 4.0) - 2.0;
 }
@@ -77,7 +80,7 @@ void main() {
   vec3 normal = getNormal(rPos);
   // float diff = clamp(dot(lightDir, normal), 0.1, 1.0);
   if(abs(distance) < 0.001){
-    gl_FragColor = vec4(normal, 1.0);
+    gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) / 4.0, 0.5, 0.9)), 1.0);
   }else{
     gl_FragColor = vec4(0.0);
   }
