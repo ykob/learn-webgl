@@ -19,15 +19,19 @@ const indecies = [
   1, 2, 3,
 ];
 
-const createVBO = (buffer, array) => {
+const createVBO = (array) => {
+  const buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, array, gl.STATIC_DRAW);
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  return buffer;
 };
-const createIBO = (buffer, array) => {
+const createIBO = (array) => {
+  const buffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, array, gl.STATIC_DRAW);
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+  return buffer;
 };
 const setArrayBuffer = (buffer, array, length) => {
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -62,14 +66,12 @@ const init = () => {
   gl.uniform2fv(uni_resolution, [window.innerWidth, window.innerHeight]);
 
   const attr_position = gl.getAttribLocation(program, 'position');
-  const vertex_buffer = gl.createBuffer();
-  createVBO(vertex_buffer, new Float32Array(vertices));
+  const vertex_buffer = createVBO(new Float32Array(vertices));
 
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
   const attr_index = gl.getAttribLocation(program, 'index');
-  const index_buffer = gl.createBuffer();
-  createIBO(index_buffer, new Uint16Array(indecies));
+  const index_buffer = createIBO(new Uint16Array(indecies));
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
