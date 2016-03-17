@@ -2,6 +2,9 @@ import Util from './modules/util.js';
 import resizeWindow from './modules/resizeWindow.js';
 import isSupportedWebGL from './modules/isSupportedWebGL.js';
 import loadProgram from './modules/loadProgram.js';
+import createVBO from './modules/create_vbo.js';
+import createIBO from './modules/create_ibo.js';
+import setArrayBuffer from './modules/set_array_buffer.js';
 
 const glslify = require('glslify');
 
@@ -18,26 +21,6 @@ const indecies = [
   0, 2, 1,
   1, 2, 3,
 ];
-
-const createVBO = (array) => {
-  const buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, array, gl.STATIC_DRAW);
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
-  return buffer;
-};
-const createIBO = (array) => {
-  const buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, array, gl.STATIC_DRAW);
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-  return buffer;
-};
-const setArrayBuffer = (buffer, array, length) => {
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.enableVertexAttribArray(array);
-  gl.vertexAttribPointer(array, length, gl.FLOAT, false, 0, 0);
-};
 
 const init = () => {
   resizeWindow(canvas);
@@ -66,12 +49,12 @@ const init = () => {
   gl.uniform2fv(uni_resolution, [window.innerWidth, window.innerHeight]);
 
   const attr_position = gl.getAttribLocation(program, 'position');
-  const vertex_buffer = createVBO(new Float32Array(vertices));
+  const vertex_buffer = createVBO(gl, new Float32Array(vertices));
 
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
   const attr_index = gl.getAttribLocation(program, 'index');
-  const index_buffer = createIBO(new Uint16Array(indecies));
+  const index_buffer = createIBO(gl, new Uint16Array(indecies));
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
@@ -84,7 +67,7 @@ const init = () => {
 
     gl.useProgram(program);
 
-    setArrayBuffer(vertex_buffer, attr_position, 3);
+    setArrayBuffer(gl, vertex_buffer, attr_position, 3);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
 
     gl.uniform1f(uni_time, time);
