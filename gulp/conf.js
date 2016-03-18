@@ -39,19 +39,7 @@ module.exports.sass = {
 
 module.exports.scripts = {
   entryFiles: [
-    `./${DIR.SRC}/js/001.js`,
-    `./${DIR.SRC}/js/002.js`,
-    `./${DIR.SRC}/js/003.js`,
-    `./${DIR.SRC}/js/004.js`,
-    `./${DIR.SRC}/js/005.js`,
-    `./${DIR.SRC}/js/006.js`,
-    `./${DIR.SRC}/js/007.js`,
-    `./${DIR.SRC}/js/008.js`,
-    `./${DIR.SRC}/js/009.js`,
-    `./${DIR.SRC}/js/010.js`,
-    `./${DIR.SRC}/js/011.js`,
-    `./${DIR.SRC}/js/012.js`,
-    `./${DIR.SRC}/js/013.js`,
+    `./${DIR.SRC}/js/main.js`,
   ],
   browserifyOpts: {
     transform: [
