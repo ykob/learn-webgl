@@ -11,6 +11,7 @@ import init010 from './010.js'
 import init011 from './011.js'
 import init012 from './012.js'
 import init013 from './013.js'
+import init014 from './014.js'
 
 const { pathname } = window.location;
 
@@ -29,6 +30,7 @@ const init = () => {
     case '/011.html': init011(); break;
     case '/012.html': init012(); break;
     case '/013.html': init013(); break;
+    case '/014.html': init014(); break;
     default:
   }
 }
