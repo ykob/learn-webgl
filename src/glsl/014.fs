@@ -12,29 +12,10 @@ const float fov = angle * 0.5 * PI / 180.0;
 
 const vec3 lightDir = vec3(0.577, -0.577, 0.577);
 
-#pragma glslify: snoise3 = require(glsl-noise/simplex/3d)
 #pragma glslify: hsv2rgb = require(./module/hsv2rgb)
-
-vec3 trans(vec3 p) {
-  return mod(vec3(p), 4.0) - 2.0;
-}
-
-float dFloor(vec3 p) {
-  return dot(p, vec3(0.0, 1.0, 0.0)) + 1.0;
-}
-
-float dSphere(vec3 p, float r) {
-  return length(p) - r;
-}
-
-float dBox(vec3 p, vec3 size) {
-  return length(max(abs(p) - size, 0.0));
-}
-
-float smoothMin(float d1, float d2, float k){
-  float h = exp(-k * d1) + exp(-k * d2);
-  return -log(h) / k;
-}
+#pragma glslify: trans = require(./module/raymarching/trans)
+#pragma glslify: dBox = require(./module/raymarching/dBox)
+#pragma glslify: smoothMin = require(./module/raymarching/smoothMin)
 
 float distanceFunc(vec3 p) {
   float d1 = dBox(trans(p), vec3(0.15, 0.15, 2.0));
