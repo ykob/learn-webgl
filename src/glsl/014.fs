@@ -18,10 +18,8 @@ const vec3 lightDir = vec3(0.577, -0.577, 0.577);
 #pragma glslify: smoothMin = require(./module/raymarching/smoothMin)
 
 float distanceFunc(vec3 p) {
-  float d1 = dBox(trans(p), vec3(0.15, 0.15, 2.0));
-  float d2 = dBox(trans(p), vec3(0.15, 2.0, 0.15));
-  float d3 = dBox(trans(p), vec3(2.0, 0.15, 0.15));
-  return smoothMin(smoothMin(d1, d2, 4.0), d3, 4.0);
+  float d1 = dBox(p, vec3(1.0, 1.0, 1.0));
+  return d1;
 }
 
 vec3 getNormal(vec3 p) {
