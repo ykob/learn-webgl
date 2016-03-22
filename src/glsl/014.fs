@@ -17,8 +17,28 @@ const vec3 lightDir = vec3(0.577, -0.577, 0.577);
 #pragma glslify: dBox = require(./module/raymarching/dBox)
 #pragma glslify: smoothMin = require(./module/raymarching/smoothMin)
 
+vec3 rotate(vec3 p, float angle, vec3 axis){
+  vec3 a = normalize(axis);
+  float s = sin(angle);
+  float c = cos(angle);
+  float r = 1.0 - c;
+  mat3 m = mat3(
+    a.x * a.x * r + c,
+    a.y * a.x * r + a.z * s,
+    a.z * a.x * r - a.y * s,
+    a.x * a.y * r - a.z * s,
+    a.y * a.y * r + c,
+    a.z * a.y * r + a.x * s,
+    a.x * a.z * r + a.y * s,
+    a.y * a.z * r - a.x * s,
+    a.z * a.z * r + c
+  );
+  return m * p;
+}
+
 float distanceFunc(vec3 p) {
-  float d1 = dBox(p, vec3(1.0, 1.0, 1.0));
+  vec3 q = rotate(p, radians(time), vec3(1.0, 0.5, 0.0));
+  float d1 = dBox(q, vec3(1.0, 1.0, 1.0));
   return d1;
 }
 
