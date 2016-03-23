@@ -14,6 +14,7 @@ const vec3 lightDir = vec3(0.577, -0.577, 0.577);
 
 #pragma glslify: hsv2rgb = require(./module/hsv2rgb)
 #pragma glslify: trans = require(./module/raymarching/trans)
+#pragma glslify: dSphere = require(./module/raymarching/dSphere)
 #pragma glslify: dBox = require(./module/raymarching/dBox)
 #pragma glslify: smoothMin = require(./module/raymarching/smoothMin)
 
@@ -37,9 +38,11 @@ vec3 rotate(vec3 p, float angle, vec3 axis){
 }
 
 float distanceFunc(vec3 p) {
-  vec3 q = rotate(p, radians(time), vec3(1.0, 0.5, 0.0));
-  float d1 = dBox(q, vec3(1.0, 1.0, 1.0));
-  return d1;
+  vec3 q1 = rotate(p, radians(time * 1.5), vec3(1.0, 0.0, 0.5));
+  float d1 = dBox(q1, vec3(1.5));
+  float d2 = dSphere(p, sin(time / 40.0) * 0.4 + 1.5);
+  float d3 = dSphere(p, sin(time / 40.0));
+  return min(max(d1, -d2), d3);
 }
 
 vec3 getNormal(vec3 p) {
