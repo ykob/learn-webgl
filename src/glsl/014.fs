@@ -18,31 +18,29 @@ const vec3 lightDir = vec3(0.577, -0.577, 0.577);
 #pragma glslify: dBox = require(./module/raymarching/dBox)
 #pragma glslify: smoothMin = require(./module/raymarching/smoothMin)
 
-vec3 rotate(vec3 p, float angle, vec3 axis){
-  vec3 a = normalize(axis);
-  float s = sin(angle);
-  float c = cos(angle);
-  float r = 1.0 - c;
+vec3 rotateX(vec3 p, float radian) {
   mat3 m = mat3(
-    a.x * a.x * r + c,
-    a.y * a.x * r + a.z * s,
-    a.z * a.x * r - a.y * s,
-    a.x * a.y * r - a.z * s,
-    a.y * a.y * r + c,
-    a.z * a.y * r + a.x * s,
-    a.x * a.z * r + a.y * s,
-    a.y * a.z * r - a.x * s,
-    a.z * a.z * r + c
+    1.0, 0.0, 0.0,
+    0.0, cos(radian), -sin(radian),
+    0.0, sin(radian), cos(radian)
+  );
+  return m * p;
+}
+
+vec3 rotateY(vec3 p, float radian) {
+  mat3 m = mat3(
+    cos(radian), 0.0, sin(radian),
+    0.0, 1.0, 0.0,
+    -sin(radian), 0.0, cos(radian)
   );
   return m * p;
 }
 
 float distanceFunc(vec3 p) {
-  vec3 q1 = rotate(p, radians(time * 1.5), vec3(1.0, 0.0, 0.5));
+  vec3 q1 = rotateX(p, radians(time * 1.5));
+  q1 = rotateY(q1, radians(time * 3.0));
   float d1 = dBox(q1, vec3(1.5));
-  float d2 = dSphere(p, sin(time / 40.0) * 0.4 + 1.5);
-  float d3 = dSphere(p, sin(time / 40.0));
-  return min(max(d1, -d2), d3);
+  return d1;
 }
 
 vec3 getNormal(vec3 p) {
