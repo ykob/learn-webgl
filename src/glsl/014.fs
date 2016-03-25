@@ -45,8 +45,27 @@ vec3 rotateZ(vec3 p, float radian) {
   return m * p;
 }
 
+vec3 rotate(vec3 p, float radian_x, float radian_y, float radian_z) {
+  mat3 mx = mat3(
+    1.0, 0.0, 0.0,
+    0.0, cos(radian_x), -sin(radian_x),
+    0.0, sin(radian_x), cos(radian_x)
+  );
+  mat3 my = mat3(
+    cos(radian_y), 0.0, sin(radian_y),
+    0.0, 1.0, 0.0,
+    -sin(radian_y), 0.0, cos(radian_y)
+  );
+  mat3 mz = mat3(
+    cos(radian_z), -sin(radian_z), 0.0,
+    sin(radian_z), cos(radian_z), 0.0,
+    0.0, 0.0, 1.0
+  );
+  return mx * my * mz * p;
+}
+
 float distanceFunc(vec3 p) {
-  vec3 p1 = rotateX(rotateY(rotateZ(p, radians(time)), radians(time * 2.0)), radians(time * 3.0));
+  vec3 p1 = rotate(p, radians(time * 3.0), radians(time * 2.0), radians(time));
   float d1 = dBox(p1, vec3(1.5));
   return d1;
 }
