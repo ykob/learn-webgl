@@ -36,10 +36,18 @@ vec3 rotateY(vec3 p, float radian) {
   return m * p;
 }
 
+vec3 rotateZ(vec3 p, float radian) {
+  mat3 m = mat3(
+    cos(radian), -sin(radian), 0.0,
+    sin(radian), cos(radian), 0.0,
+    0.0, 0.0, 1.0
+  );
+  return m * p;
+}
+
 float distanceFunc(vec3 p) {
-  vec3 q1 = rotateX(p, radians(time * 1.5));
-  q1 = rotateY(q1, radians(time * 3.0));
-  float d1 = dBox(q1, vec3(1.5));
+  vec3 p1 = rotateX(rotateY(rotateZ(p, radians(time)), radians(time * 2.0)), radians(time * 3.0));
+  float d1 = dBox(p1, vec3(1.5));
   return d1;
 }
 
