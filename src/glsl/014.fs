@@ -16,7 +16,12 @@ const vec3 lightDir = vec3(0.577, -0.577, 0.577);
 #pragma glslify: trans = require(./module/raymarching/trans)
 #pragma glslify: dSphere = require(./module/raymarching/dSphere)
 #pragma glslify: dBox = require(./module/raymarching/dBox)
-#pragma glslify: smoothMin = require(./module/raymarching/smoothMin)
+#pragma glslify: smin = require(./module/raymarching/smin)
+
+float dTorus(vec3 p, vec2 t) {
+  vec2 q = vec2(length(p.xz) - t.x, p.y);
+  return length(q) - t.y;
+}
 
 vec3 sphericalPolarCoord(float radius, float radian1, float radian2) {
   return vec3(
@@ -73,13 +78,18 @@ vec3 rotate(vec3 p, float radian_x, float radian_y, float radian_z) {
 }
 
 float distanceFunc(vec3 p) {
-  vec3 p1 = rotate(p, radians(time), radians(time), radians(time));
+  vec3 p1 = rotate(p, radians(-time), radians(time), radians(time));
   vec3 p2 = sphericalPolarCoord(2.0, radians(time), radians(time));
   float d1 = dBox(p1 + p2, vec3(1.0));
 
-  vec3 p3 = sphericalPolarCoord(2.0, radians(-time), radians(-time));
-  float d2 = dSphere(p + p3, 1.4);
-  return min(d1, d2);
+  vec3 p3 = rotate(p, radians(time), radians(-time), radians(time));
+  vec3 p4 = sphericalPolarCoord(2.0, radians(time), radians(-time));
+  float d2 = dTorus(p3 + p4, vec2(2.0, 0.5));
+
+  float d3 = dSphere(p, 2.0);
+  float d4 = dSphere(p, 1.0);
+
+  return min(d4, max(-d3, smin(d1, d2, 3.0)));
 }
 
 vec3 getNormal(vec3 p) {
