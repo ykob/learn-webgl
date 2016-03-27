@@ -10,6 +10,8 @@ export default function() {
   const glslify = require('glslify');
   const canvas = document.getElementById('webgl-contents');
   const gl = canvas.getContext('webgl');
+  const vs = glslify('../glsl/014.vs');
+  const fs = glslify('../glsl/014.fs');
 
   const vertices = [
     -1.0,  1.0, 0.0,
@@ -37,7 +39,7 @@ export default function() {
 
     let time = 0;
 
-    const program = loadProgram(gl, glslify('../glsl/014.vs'), glslify('../glsl/014.fs'));
+    const program = loadProgram(gl, vs, fs);
 
     const uni_time = gl.getUniformLocation(program, 'time');
     gl.uniform1f(uni_time, time);
