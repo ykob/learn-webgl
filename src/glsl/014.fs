@@ -78,18 +78,18 @@ vec3 rotate(vec3 p, float radian_x, float radian_y, float radian_z) {
 }
 
 float distanceFunc(vec3 p) {
-  vec3 p1 = rotate(p, radians(-time), radians(time), radians(time));
-  vec3 p2 = sphericalPolarCoord(2.0, radians(time), radians(time));
-  float d1 = dBox(p1 + p2, vec3(1.0));
+  vec3 p11 = rotate(p, radians(-time), radians(time), radians(time));
+  vec3 p12 = sphericalPolarCoord(2.0, radians(time), radians(time));
+  float d1 = dBox(p11 + p12, vec3(1.0));
 
-  vec3 p3 = rotate(p, radians(time), radians(-time), radians(time));
-  vec3 p4 = sphericalPolarCoord(2.0, radians(time), radians(-time));
-  float d2 = dTorus(p3 + p4, vec2(2.0, 0.5));
+  vec3 p21 = rotate(p, radians(time), radians(-time), radians(time));
+  vec3 p22 = sphericalPolarCoord(2.0, radians(time), radians(-time));
+  float d2 = dTorus(p21 + p22, vec2(2.0, 0.3));
 
-  float d3 = dSphere(p, 2.0);
-  float d4 = dSphere(p, 1.0);
+  vec3 p3 = sphericalPolarCoord(2.0, radians(-time), radians(-time));
+  float d3 = dSphere(p + p3, 1.0);
 
-  return min(d4, max(-d3, smin(d1, d2, 3.0)));
+  return smin(d3, smin(d1, d2, 3.0), 3.0);
 }
 
 vec3 getNormal(vec3 p) {
