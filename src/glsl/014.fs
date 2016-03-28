@@ -21,6 +21,10 @@ const vec3 lightDir = vec3(0.577, -0.577, 0.577);
 #pragma glslify: smin = require(./module/raymarching/smin)
 #pragma glslify: sphericalPolarCoord = require(./module/raymarching/sphericalPolarCoord)
 
+float displacement(vec3 p, float v) {
+  return sin(v * p.x) * sin(v * p.y) * sin(v * p.z);
+}
+
 float distanceFunc(vec3 p) {
   vec3 p11 = rotate(p, radians(-time), radians(time), radians(time));
   vec3 p12 = sphericalPolarCoord(2.0, radians(time), radians(time));
@@ -37,7 +41,7 @@ float distanceFunc(vec3 p) {
   vec3 p4 = sphericalPolarCoord(2.0, radians(-time), radians(-time));
   float d4 = dSphere(p + p4, 1.0);
 
-  return smin(smin(d1, d2, 2.0), smin(d3, d4, 2.0), 2.0);
+  return smin(smin(d1, d2, 2.0), smin(d3, d4, 2.0), 2.0) + displacement(p, 0.4);
 }
 
 vec3 getNormal(vec3 p) {
@@ -70,13 +74,13 @@ void main() {
   for(int i = 0; i < 64; i++){
       distance = distanceFunc(rPos);
       rLen += distance;
-      rPos = cPos + ray * rLen;
+      rPos = cPos + ray * rLen * 0.6;
   }
 
   // hit check
   vec3 normal = getNormal(rPos);
   // float diff = clamp(dot(lightDir, normal), 0.1, 1.0);
-  if(abs(distance) < 0.001){
+  if(distance < 0.1){
     gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) / 4.0, 0.5, 0.9)), 1.0);
   }else{
     gl_FragColor = vec4(0.0);
