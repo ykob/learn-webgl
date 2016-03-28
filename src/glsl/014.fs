@@ -13,6 +13,7 @@ const float fov = angle * 0.5 * PI / 180.0;
 const vec3 lightDir = vec3(0.577, -0.577, 0.577);
 
 #pragma glslify: hsv2rgb = require(./module/hsv2rgb)
+#pragma glslify: snoise3 = require(glsl-noise/simplex/3d)
 #pragma glslify: rotate = require(./module/raymarching/rotate)
 #pragma glslify: dSphere = require(./module/raymarching/dSphere)
 #pragma glslify: dBox = require(./module/raymarching/dBox)
@@ -21,27 +22,32 @@ const vec3 lightDir = vec3(0.577, -0.577, 0.577);
 #pragma glslify: smin = require(./module/raymarching/smin)
 #pragma glslify: sphericalPolarCoord = require(./module/raymarching/sphericalPolarCoord)
 
-float displacement(vec3 p, float v) {
-  return sin(v * p.x) * sin(v * p.y) * sin(v * p.z);
+float displacement(vec3 p) {
+  return snoise3(vec3(p.x + 0.01, p.yz) * 0.4) * 2.0;
 }
 
 float distanceFunc(vec3 p) {
-  vec3 p11 = rotate(p, radians(-time), radians(time), radians(time));
-  vec3 p12 = sphericalPolarCoord(2.0, radians(time), radians(time));
-  float d1 = dBox(p11 + p12, vec3(1.0));
+  // vec3 p11 = rotate(p, radians(-time), radians(time), radians(time));
+  // vec3 p12 = sphericalPolarCoord(2.0, radians(time), radians(time));
+  // float d1 = dBox(p11 + p12, vec3(1.0));
+  //
+  // vec3 p21 = rotate(p, radians(time), radians(-time), radians(time));
+  // vec3 p22 = sphericalPolarCoord(2.0, radians(-time), radians(time));
+  // float d2 = dTorus(p21 + p22, vec2(2.0, 0.3));
+  //
+  // vec3 p31 = rotate(p, radians(time * 2.0), radians(time * 2.0), radians(time * -2.0));
+  // vec3 p32 = sphericalPolarCoord(2.0, radians(time), radians(-time));
+  // float d3 = dCapsule(p31 + p32, vec3(1.0), vec3(-1.0), 0.4);
+  //
+  // vec3 p4 = sphericalPolarCoord(2.0, radians(-time), radians(-time));
+  // float d4 = dSphere(p + p4, 1.0);
+  //
+  // return smin(smin(d1, d2, 2.0), smin(d3, d4, 2.0), 2.0) + displacement(p, 0.4);
 
-  vec3 p21 = rotate(p, radians(time), radians(-time), radians(time));
-  vec3 p22 = sphericalPolarCoord(2.0, radians(-time), radians(time));
-  float d2 = dTorus(p21 + p22, vec2(2.0, 0.3));
-
-  vec3 p31 = rotate(p, radians(time * 2.0), radians(time * 2.0), radians(time * -2.0));
-  vec3 p32 = sphericalPolarCoord(2.0, radians(time), radians(-time));
-  float d3 = dCapsule(p31 + p32, vec3(1.0), vec3(-1.0), 0.4);
-
-  vec3 p4 = sphericalPolarCoord(2.0, radians(-time), radians(-time));
-  float d4 = dSphere(p + p4, 1.0);
-
-  return smin(smin(d1, d2, 2.0), smin(d3, d4, 2.0), 2.0) + displacement(p, 0.4);
+  vec3 p41 = rotate(p, radians(time * 2.0), radians(time * 2.0), radians(time * -2.0));
+  vec3 p42 = sphericalPolarCoord(0.1, radians(time), radians(-time));
+  float d4 = dSphere(p41 + p42, 2.4) + displacement(p + time / 14.0);;
+  return d4;
 }
 
 vec3 getNormal(vec3 p) {
@@ -74,14 +80,14 @@ void main() {
   for(int i = 0; i < 64; i++){
       distance = distanceFunc(rPos);
       rLen += distance;
-      rPos = cPos + ray * rLen * 0.6;
+      rPos = cPos + ray * rLen * 0.3;
   }
 
   // hit check
   vec3 normal = getNormal(rPos);
   // float diff = clamp(dot(lightDir, normal), 0.1, 1.0);
   if(distance < 0.1){
-    gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) / 4.0, 0.5, 0.9)), 1.0);
+    gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) / 2.0 + 0.5, 0.2, 0.9)), 1.0);
   }else{
     gl_FragColor = vec4(0.0);
   }
