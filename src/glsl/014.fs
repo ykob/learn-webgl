@@ -13,74 +13,13 @@ const float fov = angle * 0.5 * PI / 180.0;
 const vec3 lightDir = vec3(0.577, -0.577, 0.577);
 
 #pragma glslify: hsv2rgb = require(./module/hsv2rgb)
+#pragma glslify: rotate = require(./module/raymarching/rotate)
 #pragma glslify: dSphere = require(./module/raymarching/dSphere)
 #pragma glslify: dBox = require(./module/raymarching/dBox)
+#pragma glslify: dTorus = require(./module/raymarching/dTorus)
+#pragma glslify: dCapsule = require(./module/raymarching/dCapsule)
 #pragma glslify: smin = require(./module/raymarching/smin)
-
-float dTorus(vec3 p, vec2 t) {
-  vec2 q = vec2(length(p.xz) - t.x, p.y);
-  return length(q) - t.y;
-}
-
-float dCapsule(vec3 p, vec3 a, vec3 b, float r) {
-  vec3 pa = p - a, ba = b - a;
-  float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
-  return length( pa - ba*h ) - r;
-}
-
-vec3 sphericalPolarCoord(float radius, float radian1, float radian2) {
-  return vec3(
-    radius * sin(radian1) * cos(radian2),
-    radius * sin(radian1) * sin(radian2),
-    radius * cos(radian1)
-  );
-}
-
-vec3 rotateX(vec3 p, float radian) {
-  mat3 m = mat3(
-    1.0, 0.0, 0.0,
-    0.0, cos(radian), -sin(radian),
-    0.0, sin(radian), cos(radian)
-  );
-  return m * p;
-}
-
-vec3 rotateY(vec3 p, float radian) {
-  mat3 m = mat3(
-    cos(radian), 0.0, sin(radian),
-    0.0, 1.0, 0.0,
-    -sin(radian), 0.0, cos(radian)
-  );
-  return m * p;
-}
-
-vec3 rotateZ(vec3 p, float radian) {
-  mat3 m = mat3(
-    cos(radian), -sin(radian), 0.0,
-    sin(radian), cos(radian), 0.0,
-    0.0, 0.0, 1.0
-  );
-  return m * p;
-}
-
-vec3 rotate(vec3 p, float radian_x, float radian_y, float radian_z) {
-  mat3 mx = mat3(
-    1.0, 0.0, 0.0,
-    0.0, cos(radian_x), -sin(radian_x),
-    0.0, sin(radian_x), cos(radian_x)
-  );
-  mat3 my = mat3(
-    cos(radian_y), 0.0, sin(radian_y),
-    0.0, 1.0, 0.0,
-    -sin(radian_y), 0.0, cos(radian_y)
-  );
-  mat3 mz = mat3(
-    cos(radian_z), -sin(radian_z), 0.0,
-    sin(radian_z), cos(radian_z), 0.0,
-    0.0, 0.0, 1.0
-  );
-  return mx * my * mz * p;
-}
+#pragma glslify: sphericalPolarCoord = require(./module/raymarching/sphericalPolarCoord)
 
 float distanceFunc(vec3 p) {
   vec3 p11 = rotate(p, radians(-time), radians(time), radians(time));
