@@ -47,8 +47,8 @@ float distanceFunc(vec3 p) {
 
   vec3 p1 = rotate(p, radians(time * 2.0), radians(time * 2.0), radians(time * -2.0));
   vec3 p2 = sphericalPolarCoord(2.0, radians(time), radians(-time));
-  float d1 = dFloor(p) + snoise3(p / 2.0 + time / 30.0) * 0.4;
-  float d2 = dCapsule(p1 + p2 , vec3(1.0), vec3(-1.0), 1.0) + snoise3(p / 2.0 + time / 30.0) * 1.4;
+  float d1 = dFloor(p) + snoise3(p / 2.0 + time / 30.0) * 0.5;
+  float d2 = dTorus(p1 + p2, vec2(2.0, 0.5)) + snoise3(p / 2.4 + time / 30.0) * 1.4;
   return smin(d2, d1, 4.0);
 }
 
@@ -83,8 +83,8 @@ void main() {
 
   vec3 normal = getNormal(rPos);
   if(distance < 0.1){
-    gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) * 0.8 + time / 200.0, 0.12, dot(normal, cUp) * 0.4 + 0.5)), 1.0);
+    gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) * 0.4 + time / 200.0, 0.12, dot(normal, cUp) * 0.1 + 0.75)), 1.0);
   }else{
-    gl_FragColor = vec4(0.0);
+    gl_FragColor = vec4(0.9, 0.9, 0.9, 1.0);
   }
 }
