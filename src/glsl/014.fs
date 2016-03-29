@@ -45,15 +45,19 @@ float distanceFunc(vec3 p) {
   //
   // return smin(smin(d1, d2, 2.0), smin(d3, d4, 2.0), 2.0) + displacement(p, 0.4);
 
-  vec3 p1 = rotate(p, radians(time * 2.0), radians(time * 2.0), radians(time * -2.0));
-  vec3 p2 = sphericalPolarCoord(2.0, radians(time), radians(-time));
-  float d1 = dFloor(p) + snoise3(p / 2.0 + time / 30.0) * 0.5;
-  float d2 = dTorus(p1 + p2, vec2(2.0, 0.5)) + snoise3(p / 2.4 + time / 30.0) * 1.4;
-  return smin(d2, d1, 4.0);
+  // vec3 p1 = rotate(p, radians(time * 2.0), radians(time * 2.0), radians(time * -2.0));
+  // vec3 p2 = sphericalPolarCoord(2.0, radians(time), radians(-time));
+  // float d1 = dFloor(p) + snoise3(p / 2.0 + time / 30.0) * 0.5;
+  // float d2 = dTorus(p1 + p2, vec2(2.0, 0.5)) + snoise3(p / 2.4 + time / 30.0) * 1.4;
+  // return smin(d2, d1, 4.0);
+
+  float d1 = dSphere(p, 4.0) + pow(snoise3(vec3(p.x, p.y + time / 50.0, p.z)), 3.0);
+  float d2 = dSphere(p, 4.5);
+  return max(d1, -d2);
 }
 
 vec3 getNormal(vec3 p) {
-  const float d = 0.01;
+  const float d = 0.1;
   return normalize(vec3(
     distanceFunc(p + vec3(d, 0.0, 0.0)) - distanceFunc(p + vec3(-d, 0.0, 0.0)),
     distanceFunc(p + vec3(0.0, d, 0.0)) - distanceFunc(p + vec3(0.0, -d, 0.0)),
@@ -64,7 +68,7 @@ vec3 getNormal(vec3 p) {
 void main() {
   vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
 
-  vec3 cPos = vec3(0.0, 1.0, 10.0);
+  vec3 cPos = vec3(0.0, 0.0, 10.0);
   vec3 cDir = vec3(0.0, 0.0, -1.0);
   vec3 cUp  = vec3(0.0, 1.0, 0.0);
   vec3 cSide = cross(cDir, cUp);
@@ -78,11 +82,11 @@ void main() {
   for(int i = 0; i < 64; i++){
       distance = distanceFunc(rPos);
       rLen += distance;
-      rPos = cPos + ray * rLen * 0.4;
+      rPos = cPos + ray * rLen * 0.2;
   }
 
   vec3 normal = getNormal(rPos);
-  if(distance < 0.1){
+  if(distance < 1.0){
     gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) * 0.4 + time / 200.0, 0.12, dot(normal, cUp) * 0.1 + 0.75)), 1.0);
   }else{
     gl_FragColor = vec4(0.9, 0.9, 0.9, 1.0);
