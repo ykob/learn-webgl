@@ -95,7 +95,14 @@ void main() {
 
   vec3 normal = getNormal(rPos);
   if(distance < 1.0){
-    gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) * 0.8 + time / 200.0, 0.2, dot(normal, cUp) * 0.8 + 0.1)), 1.0);
+    float n = snoise3(rPos * 0.24 + time / 100.0);
+    vec3 p = rotate(rPos, radians(time * -2.0), radians(time * 2.0), radians(time * -2.0));
+    float d = dSphere(p, 1.6) - n;
+    if (d > 1.0) {
+      gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) * 0.8 + time / 200.0, 0.2, dot(normal, cUp) * 0.8 + 0.1)), 1.0);
+    } else {
+      gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) * 0.1 + time / 200.0, 0.8, dot(normal, cUp) * 0.2 + 0.8)), 1.0);
+    }
   }else{
     gl_FragColor = vec4(0.9, 0.9, 0.9, 1.0);
   }
