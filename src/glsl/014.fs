@@ -23,44 +23,16 @@ const vec3 lightDir = vec3(0.577, -0.577, 0.577);
 #pragma glslify: smin = require(./module/raymarching/smin)
 #pragma glslify: sphericalPolarCoord = require(./module/raymarching/sphericalPolarCoord)
 
-float displacement(vec3 p) {
-  return snoise3(p / 2.0);
-}
-
 float dsBox(vec3 p, vec3 size, float v) {
   return length(max(abs(p) - size, 0.0)) - v;
 }
 
 float distanceFunc(vec3 p) {
-  // vec3 p11 = rotate(p, radians(-time), radians(time), radians(time));
-  // vec3 p12 = sphericalPolarCoord(2.0, radians(time), radians(time));
-  // float d1 = dBox(p11 + p12, vec3(1.0));
-  //
-  // vec3 p21 = rotate(p, radians(time), radians(-time), radians(time));
-  // vec3 p22 = sphericalPolarCoord(2.0, radians(-time), radians(time));
-  // float d2 = dTorus(p21 + p22, vec2(2.0, 0.3));
-  //
-  // vec3 p31 = rotate(p, radians(time * 2.0), radians(time * 2.0), radians(time * -2.0));
-  // vec3 p32 = sphericalPolarCoord(2.0, radians(time), radians(-time));
-  // float d3 = dCapsule(p31 + p32, vec3(1.0), vec3(-1.0), 0.4);
-  //
-  // vec3 p4 = sphericalPolarCoord(2.0, radians(-time), radians(-time));
-  // float d4 = dSphere(p + p4, 1.0);
-  //
-  // return smin(smin(d1, d2, 2.0), smin(d3, d4, 2.0), 2.0) + displacement(p, 0.4);
-
-  // vec3 p1 = rotate(p, radians(time * 2.0), radians(time * 2.0), radians(time * -2.0));
-  // vec3 p2 = sphericalPolarCoord(2.0, radians(time), radians(-time));
-  // float d1 = dFloor(p) + snoise3(p / 2.0 + time / 30.0) * 0.5;
-  // float d2 = dTorus(p1 + p2, vec2(2.0, 0.5)) + snoise3(p / 2.4 + time / 30.0) * 1.4;
-  // return smin(d2, d1, 4.0);
-
-  float n1 = snoise3(p * 0.24 + time / 100.0);
-  vec3 p1 = rotate(p, radians(time * 2.0), radians(time * 2.0), radians(time * -2.0));
-  float d1 = dsBox(p1, vec3(2.0), 0.3);
-  vec3 p2 = rotate(p, radians(time * -2.0), radians(time * 2.0), radians(time * -2.0));
-  float d2 = dSphere(p2, 3.5) - n1;
-  float d3 = dSphere(p2, 1.6) - n1;
+  float n1 = snoise3(p * 0.3 + time / 200.0);
+  vec3 p1 = rotate(p, radians(time), radians(time * 2.0), radians(time));
+  float d1 = dsBox(p1, vec3(2.0), 0.5);
+  float d2 = dSphere(p1, 3.2) - n1;
+  float d3 = dSphere(p1, 1.8) - n1;
   return min(max(d1, -d2), d3);
 }
 
@@ -94,8 +66,8 @@ void main() {
   }
 
   vec3 normal = getNormal(rPos);
-  if(distance < 1.0){
-    float n = snoise3(rPos * 0.24 + time / 100.0);
+  if(abs(distance) < 1.0){
+    float n = snoise3(rPos * 0.3 + time / 200.0);
     vec3 p = rotate(rPos, radians(time * -2.0), radians(time * 2.0), radians(time * -2.0));
     float d = dSphere(p, 1.6) - n;
     if (d > 1.0) {
@@ -103,7 +75,7 @@ void main() {
     } else {
       gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) * 0.1 + time / 200.0, 0.8, dot(normal, cUp) * 0.2 + 0.8)), 1.0);
     }
-  }else{
+  }else {
     gl_FragColor = vec4(0.9, 0.9, 0.9, 1.0);
   }
 }
