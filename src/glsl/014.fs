@@ -75,6 +75,6 @@ void main() {
       gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) * 0.1 + time / 200.0, 0.8, dot(normal, cUp) * 0.2 + 0.8)), 1.0);
     }
   } else {
-    gl_FragColor = vec4(0.9, 0.9, 0.9, 1.0);
+    gl_FragColor = vec4(0.0);
   }
 }

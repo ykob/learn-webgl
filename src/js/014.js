@@ -37,9 +37,41 @@ export default function() {
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.viewport(0, 0, canvas.width, canvas.height);
 
+    const center = [0.0, 0.0, 0.0];
+    const camera = {
+      position: [0.0, 0.0, 2.4],
+      up: [0.0, 1.0, 0.0]
+    };
+
+    let fovy = 45;
+    let aspect = canvas.width / canvas.height;
+    let near = 0.1;
+    let far = 100.0;
+
     let time = 0;
 
+    const m_matrix   = mat4.identity(mat4.create());
+    const v_matrix   = mat4.identity(mat4.create());
+    const p_matrix   = mat4.identity(mat4.create());
+    const mv_matrix  = mat4.identity(mat4.create());
+
+    mat4.lookAt(v_matrix, camera.position, center, camera.up);
+    mat4.perspective(p_matrix, fovy, aspect, near, far);
+    mat4.multiply(mv_matrix, v_matrix, m_matrix);
+
     const program = loadProgram(gl, vs, fs);
+
+    const uni_m_matrix = gl.getUniformLocation(program, 'm_matrix');
+    gl.uniformMatrix4fv(uni_m_matrix, false, m_matrix);
+
+    const uni_v_matrix = gl.getUniformLocation(program, 'v_matrix');
+    gl.uniformMatrix4fv(uni_v_matrix, false, v_matrix);
+
+    const uni_p_matrix = gl.getUniformLocation(program, 'p_matrix');
+    gl.uniformMatrix4fv(uni_p_matrix, false, p_matrix);
+
+    const uni_mv_matrix = gl.getUniformLocation(program, 'mv_matrix');
+    gl.uniformMatrix4fv(uni_mv_matrix, false, mv_matrix);
 
     const uni_time = gl.getUniformLocation(program, 'time');
     gl.uniform1f(uni_time, time);
@@ -63,7 +95,7 @@ export default function() {
     const render = () => {
       time ++;
 
-      gl.clearColor(0.0, 0.0, 0.0, 1.0);
+      gl.clearColor(0.0, 0.0, 0.0, 0.0);
   		gl.clearDepth(1.0);
   		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
