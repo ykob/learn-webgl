@@ -15,22 +15,21 @@ const vec3 lightDir = vec3(0.577, -0.577, 0.577);
 #pragma glslify: hsv2rgb = require(./module/hsv2rgb)
 #pragma glslify: snoise3 = require(glsl-noise/simplex/3d)
 #pragma glslify: rotate = require(./module/raymarching/rotate)
-#pragma glslify: dFloor = require(./module/raymarching/dFloor)
-#pragma glslify: dSphere = require(./module/raymarching/dSphere)
 #pragma glslify: dBox = require(./module/raymarching/dBox)
-#pragma glslify: dTorus = require(./module/raymarching/dTorus)
-#pragma glslify: dCapsule = require(./module/raymarching/dCapsule)
-#pragma glslify: smin = require(./module/raymarching/smin)
 #pragma glslify: sphericalPolarCoord = require(./module/raymarching/sphericalPolarCoord)
 
-float dsBox(vec3 p, vec3 size, float v) {
-  return length(max(abs(p) - size, 0.0)) - v;
+float getNoise(vec3 p) {
+  return snoise3(p * 0.26 + time / 100.0);
+}
+
+vec3 getRotate(vec3 p) {
+  return rotate(p, radians(time), radians(time * 2.0), radians(time));
 }
 
 float distanceFunc(vec3 p) {
-  float n1 = snoise3(p * 0.26 + time / 100.0);
-  vec3 p1 = rotate(p, radians(time), radians(time * 2.0), radians(time));
-  float d1 = dsBox(p1, vec3(2.0), 0.5);
+  float n1 = getNoise(p);
+  vec3 p1 = getRotate(p);
+  float d1 = dBox(p1, vec3(2.0)) - 0.5;
   float d2 = dBox(p1, vec3(2.4)) - n1;
   float d3 = dBox(p1, vec3(1.95)) - n1;
   return min(max(d1, -d2), d3);
@@ -60,16 +59,16 @@ void main() {
   float rLen = 0.0;
   vec3  rPos = cPos;
   for(int i = 0; i < 64; i++){
-      distance = distanceFunc(rPos);
-      rLen += distance;
-      rPos = cPos + ray * rLen * 0.2;
+    distance = distanceFunc(rPos);
+    rLen += distance;
+    rPos = cPos + ray * rLen * 0.2;
   }
 
   vec3 normal = getNormal(rPos);
   if(abs(distance) < 0.5){
-    float n = snoise3(rPos * 0.26 + time / 100.0);
-    vec3 p = rotate(rPos, radians(time), radians(time * 2.0), radians(time));
-    float d = dBox(p, vec3(1.85)) - n;
+    float n = getNoise(rPos);
+    vec3 p = getRotate(rPos);
+    float d = dBox(p, vec3(1.8)) - n;
     if (d > 0.5) {
       gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) * 0.8 + time / 200.0, 0.2, dot(normal, cUp) * 0.8 + 0.1)), 1.0);
     } else {
