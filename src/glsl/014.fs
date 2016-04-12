@@ -6,6 +6,8 @@ uniform float time;
 uniform vec2 mouse;
 uniform vec2 resolution;
 
+uniform mat4 m_matrix2;
+
 uniform vec3 cPos;
 uniform vec3 cDir;
 uniform vec3 cUp;
@@ -23,7 +25,7 @@ const vec3 lightDir = vec3(0.577, -0.577, 0.577);
 #pragma glslify: sphericalPolarCoord = require(./module/raymarching/sphericalPolarCoord)
 
 float getNoise(vec3 p) {
-  return snoise3(p * 0.26 + time / 100.0);
+  return snoise3(p * 0.4 + time / 100.0);
 }
 
 vec3 getRotate(vec3 p) {
@@ -31,11 +33,12 @@ vec3 getRotate(vec3 p) {
 }
 
 float distanceFunc(vec3 p) {
-  float n1 = getNoise(p);
-  vec3 p1 = getRotate(p);
-  float d1 = dBox(p1, vec3(1.0)) - 0.2;
-  float d2 = dBox(p1, vec3(1.2)) - n1;
-  float d3 = dBox(p1, vec3(0.9)) - n1;
+  vec4 p1 = m_matrix2 * vec4(p, 1.0);
+  float n1 = getNoise(p1.xyz);
+  vec3 p2 = getRotate(p1.xyz);
+  float d1 = dBox(p2, vec3(0.8)) - 0.2;
+  float d2 = dBox(p2, vec3(1.0)) - n1;
+  float d3 = dBox(p2, vec3(0.5)) - n1;
   return min(max(d1, -d2), d3);
 }
 
@@ -70,9 +73,10 @@ void main() {
 
   vec3 normal = getNormal(rPos);
   if(abs(distance) < 0.5){
-    float n = getNoise(rPos);
-    vec3 p = getRotate(rPos);
-    float d = dBox(p, vec3(0.7)) - n;
+    vec4 p1 = m_matrix2 * vec4(rPos, 1.0);
+    float n = getNoise(p1.xyz);
+    vec3 p2 = getRotate(p1.xyz);
+    float d = dBox(p2, vec3(0.5)) - n;
     if (d > 0.5) {
       gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) * 0.8 + time / 200.0, 0.2, dot(normal, cUp) * 0.8 + 0.1)), 1.0);
     } else {

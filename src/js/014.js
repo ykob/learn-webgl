@@ -51,6 +51,7 @@ export default function() {
     let time = 0;
 
     const m_matrix   = mat4.identity(mat4.create());
+    const m_matrix2  = mat4.identity(mat4.create());
     const v_matrix   = mat4.identity(mat4.create());
     const p_matrix   = mat4.identity(mat4.create());
     const mv_matrix  = mat4.identity(mat4.create());
@@ -64,14 +65,14 @@ export default function() {
     const uni_m_matrix = gl.getUniformLocation(program, 'm_matrix');
     gl.uniformMatrix4fv(uni_m_matrix, false, m_matrix);
 
+    const uni_m_matrix2 = gl.getUniformLocation(program, 'm_matrix2');
+    gl.uniformMatrix4fv(uni_m_matrix2, false, m_matrix2);
+
     const uni_v_matrix = gl.getUniformLocation(program, 'v_matrix');
     gl.uniformMatrix4fv(uni_v_matrix, false, v_matrix);
 
     const uni_p_matrix = gl.getUniformLocation(program, 'p_matrix');
     gl.uniformMatrix4fv(uni_p_matrix, false, p_matrix);
-
-    const uni_mv_matrix = gl.getUniformLocation(program, 'mv_matrix');
-    gl.uniformMatrix4fv(uni_mv_matrix, false, mv_matrix);
 
     const uni_time = gl.getUniformLocation(program, 'time');
     gl.uniform1f(uni_time, time);
@@ -103,6 +104,12 @@ export default function() {
 
     const render = () => {
       time ++;
+      mat4.translate(
+        m_matrix,
+        mat4.identity(mat4.create()),
+        [Math.sin(time * Math.PI / 180) * 4, 0, Math.cos(time * Math.PI / 180) * 4]
+      );
+      mat4.invert(m_matrix2, m_matrix);
 
       gl.clearColor(0.0, 0.0, 0.0, 0.0);
   		gl.clearDepth(1.0);
@@ -115,6 +122,8 @@ export default function() {
 
       gl.uniform1f(uni_time, time);
       gl.uniform2fv(uni_resolution, [window.innerWidth, window.innerHeight]);
+      gl.uniformMatrix4fv(uni_m_matrix, false, m_matrix);
+      gl.uniformMatrix4fv(uni_m_matrix2, false, m_matrix2);
 
       gl.drawElements(gl.TRIANGLES, indecies.length, gl.UNSIGNED_SHORT, 0);
 
