@@ -14,10 +14,10 @@ export default function() {
   const fs = glslify('../glsl/014.fs');
 
   const vertices = [
-    -2.0,  2.0, 0.0,
-     2.0,  2.0, 0.0,
-    -2.0, -2.0, 0.0,
-     2.0, -2.0, 0.0,
+    -2.8,  2.8, 0.0,
+     2.8,  2.8, 0.0,
+    -2.8, -2.8, 0.0,
+     2.8, -2.8, 0.0,
   ];
   const indecies = [
     0, 2, 1,
@@ -31,10 +31,11 @@ export default function() {
       console.log('OES_standard_derivatives is not supported');
       return;
     }
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
-    gl.enable(gl.DEPTH_TEST);
-    gl.enable(gl.CULL_FACE);
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.clearColor(0.95, 0.95, 0.95, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.disable(gl.DEPTH_TEST);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     gl.viewport(0, 0, canvas.width, canvas.height);
 
     const camera = {
@@ -111,7 +112,7 @@ export default function() {
       );
       mat4.invert(m_matrix2, m_matrix);
 
-      gl.clearColor(0.0, 0.0, 0.0, 0.0);
+      gl.clearColor(0.95, 0.95, 0.95, 1.0);
   		gl.clearDepth(1.0);
   		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
