@@ -8,5 +8,4 @@ uniform mat4 mv_matrix;
 void main(void) {
   vec4 mv_position = mv_matrix * vec4(position, 1.0);
   gl_Position = p_matrix * mv_position;
-  // gl_Position = vec4(position, 1.0);
 }

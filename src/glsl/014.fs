@@ -6,6 +6,10 @@ uniform float time;
 uniform vec2 mouse;
 uniform vec2 resolution;
 
+uniform vec3 cPos;
+uniform vec3 cDir;
+uniform vec3 cUp;
+
 const float PI = 3.14159265;
 const float angle = 60.0;
 const float fov = angle * 0.5 * PI / 180.0;
@@ -29,9 +33,9 @@ vec3 getRotate(vec3 p) {
 float distanceFunc(vec3 p) {
   float n1 = getNoise(p);
   vec3 p1 = getRotate(p);
-  float d1 = dBox(p1, vec3(2.0)) - 0.5;
-  float d2 = dBox(p1, vec3(2.4)) - n1;
-  float d3 = dBox(p1, vec3(1.95)) - n1;
+  float d1 = dBox(p1, vec3(1.0)) - 0.2;
+  float d2 = dBox(p1, vec3(1.2)) - n1;
+  float d3 = dBox(p1, vec3(0.9)) - n1;
   return min(max(d1, -d2), d3);
 }
 
@@ -47,9 +51,9 @@ vec3 getNormal(vec3 p) {
 void main() {
   vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
 
-  vec3 cPos = vec3(0.0, 0.0, 10.0);
-  vec3 cDir = vec3(0.0, 0.0, -1.0);
-  vec3 cUp  = vec3(0.0, 1.0, 0.0);
+  // vec3 cPos = vec3(0.0, 0.0, 10.0);
+  // vec3 cDir = vec3(0.0, 0.0, -1.0);
+  // vec3 cUp  = vec3(0.0, 1.0, 0.0);
   vec3 cSide = cross(cDir, cUp);
   float targetDepth = 1.4;
 
@@ -68,7 +72,7 @@ void main() {
   if(abs(distance) < 0.5){
     float n = getNoise(rPos);
     vec3 p = getRotate(rPos);
-    float d = dBox(p, vec3(1.8)) - n;
+    float d = dBox(p, vec3(0.7)) - n;
     if (d > 0.5) {
       gl_FragColor = vec4(hsv2rgb(vec3(dot(normal, cUp) * 0.8 + time / 200.0, 0.2, dot(normal, cUp) * 0.8 + 0.1)), 1.0);
     } else {

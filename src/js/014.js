@@ -14,10 +14,10 @@ export default function() {
   const fs = glslify('../glsl/014.fs');
 
   const vertices = [
-    -1.0,  1.0, 0.0,
-     1.0,  1.0, 0.0,
-    -1.0, -1.0, 0.0,
-     1.0, -1.0, 0.0,
+    -2.0,  2.0, 0.0,
+     2.0,  2.0, 0.0,
+    -2.0, -2.0, 0.0,
+     2.0, -2.0, 0.0,
   ];
   const indecies = [
     0, 2, 1,
@@ -37,10 +37,10 @@ export default function() {
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.viewport(0, 0, canvas.width, canvas.height);
 
-    const center = [0.0, 0.0, 0.0];
     const camera = {
-      position: [0.0, 0.0, 2.4],
-      up: [0.0, 1.0, 0.0]
+      pos: [0.0, 0.0, 8.0],
+      dir: [0.0, 0.0, -1.0],
+      up:  [0.0, 1.0, 0.0],
     };
 
     let fovy = 45;
@@ -55,7 +55,7 @@ export default function() {
     const p_matrix   = mat4.identity(mat4.create());
     const mv_matrix  = mat4.identity(mat4.create());
 
-    mat4.lookAt(v_matrix, camera.position, center, camera.up);
+    mat4.lookAt(v_matrix, camera.pos, camera.dir, camera.up);
     mat4.perspective(p_matrix, fovy, aspect, near, far);
     mat4.multiply(mv_matrix, v_matrix, m_matrix);
 
@@ -81,6 +81,15 @@ export default function() {
 
     const uni_resolution = gl.getUniformLocation(program, 'resolution');
     gl.uniform2fv(uni_resolution, [window.innerWidth, window.innerHeight]);
+
+    const uni_cpos = gl.getUniformLocation(program, 'cPos');
+    gl.uniform3fv(uni_cpos, camera.pos);
+
+    const uni_cdir = gl.getUniformLocation(program, 'cDir');
+    gl.uniform3fv(uni_cdir, camera.dir);
+
+    const uni_cup = gl.getUniformLocation(program, 'cUp');
+    gl.uniform3fv(uni_cup, camera.up);
 
     const attr_position = gl.getAttribLocation(program, 'position');
     const vertex_buffer = createVBO(gl, new Float32Array(vertices));
