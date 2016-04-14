@@ -87,12 +87,6 @@ export default function() {
     const uni_cpos = gl.getUniformLocation(program, 'cPos');
     gl.uniform3fv(uni_cpos, camera.pos);
 
-    const uni_cdir = gl.getUniformLocation(program, 'cDir');
-    gl.uniform3fv(uni_cdir, camera.dir);
-
-    const uni_cup = gl.getUniformLocation(program, 'cUp');
-    gl.uniform3fv(uni_cup, camera.up);
-
     const attr_position = gl.getAttribLocation(program, 'position');
     const vertex_buffer = createVBO(gl, new Float32Array(vertices));
 
@@ -108,7 +102,7 @@ export default function() {
       mat4.translate(
         m_matrix,
         mat4.identity(mat4.create()),
-        [Math.sin(time * Math.PI / 180) * 4, 0, Math.cos(time * Math.PI / 180) * 4]
+        [Math.sin(time * Math.PI / 180) * 4, 0, Math.cos(time * Math.PI / 180) * 2]
       );
       mat4.invert(m_matrix2, m_matrix);
 
